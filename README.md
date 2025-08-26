@@ -1,2 +1,7 @@
-# dev-summit-shift-left-on-steroids
-Dev Summit Shift Left on Stroids
+# Dev Summit Shift Left on Steroids
+
+Start the application with:
+
+```bash
+./gradlew bootRun
+```

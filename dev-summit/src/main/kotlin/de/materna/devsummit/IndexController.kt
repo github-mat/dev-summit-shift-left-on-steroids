@@ -47,7 +47,7 @@ class IndexController(
     }
 
     return createHTMLDocument().div(
-      "container-xxl pt-5"
+      "p-5"
     ) {
       unsafe { raw(content) }
     }.serialize(true)
