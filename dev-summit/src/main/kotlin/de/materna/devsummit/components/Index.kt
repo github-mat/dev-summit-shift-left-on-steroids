@@ -101,22 +101,30 @@ private fun HEAD.internalDependencies(resourceUrlProvider: ResourceUrlProvider) 
 fun HTML.createBody(
   slideNumber: Long
 ) {
-  body("d-flex flex-column min-vh-100") {
+  classes = setOf("bg-dark")
+  body {
     id = "body"
-    createHeader()
-    main("flex-grow-1") {
+    classes = setOf("bg-black", "d-flex", "justify-content-center", "align-items-center", "m-0")
+    main {
+      createSlideHeader()
       id = "main"
-      loadMainElement("/$slideNumber")
+      classes = setOf("bg-white", "rounded", "shadow", "d-flex", "flex-column", "justify-content-center", "align-items-stretch", "w-100")
+      style = "min-width: 2000px; max-width: 80vh; min-height: 100vh; height: 70vh; display: flex; flex-direction: column;"
+      div {
+        id = "slide-content"
+        style = "flex: 1 0 auto; width: 100%;"
+        loadMainElement("/$slideNumber")
+      }
+      createSlideFooter()
     }
-    createFooter()
+
   }
 }
 
-private fun MAIN.loadMainElement(page: String) {
-  div {
-    hxPushUrl()
-    hxGet(page)
-    hxTarget("#main")
-    hxTrigger("load")
-  }
+private fun DIV.loadMainElement(page: String) {
+  // Only set HTMX attributes on the slide-content div
+  hxPushUrl()
+  hxGet(page)
+  hxTarget("#slide-content")
+  hxTrigger("load")
 }
