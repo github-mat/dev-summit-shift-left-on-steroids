@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM docker.io/eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN ./gradlew clean bootJar -x test --no-daemon
 RUN cp build/libs/*.jar app.jar
 
 # Stage 2: Create minimal runtime image
-FROM bellsoft/liberica-runtime-container:jdk-24-slim-musl
+FROM docker.io/bellsoft/liberica-runtime-container:jdk-24-slim-musl
 
 WORKDIR /app
 COPY --from=build /app/app.jar app.jar
