@@ -1,0 +1,38 @@
+name: Destroy PR Resources
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  destroy-terraform:
+    name: Destroy Terraform Resources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: braided-flow-434519-s1
+          service_account: github-actions@braided-flow-434519-s1.iam.gserviceaccount.com
+          workload_identity_provider: projects/542761338020/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: ">= 363.0.0"
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform init
+        working-directory: terraform/deployment
+        run: |
+          terraform init
+          terraform workspace select -or-create $(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+      - name: Terraform destroy
+        working-directory: terraform/deployment
+        run: |
+          terraform destroy -auto-approve

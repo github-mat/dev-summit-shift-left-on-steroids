@@ -27,3 +27,4 @@ replay_pid*
 .kotlin/
 # JetBrains IDEs
 /.idea/
+/.terrafrom/

@@ -1,0 +1,114 @@
+name: Deploy from PR
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches:
+      - main
+
+env:
+  CONTAINER_REGISTRY: europe-west3-docker.pkg.dev
+
+jobs:
+  ci:
+    name: Run CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run CI
+        run: echo "Run your CI steps here"
+
+  publish-docker-image:
+    name: Publish Docker Images
+    needs: ci
+
+    permissions:
+      contents: read
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: braided-flow-434519-s1
+          service_account: github-actions@braided-flow-434519-s1.iam.gserviceaccount.com
+          workload_identity_provider: projects/542761338020/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: ">= 363.0.0"
+
+      - name: Configure Docker
+        run: |
+          gcloud info
+          gcloud auth configure-docker ${{ env.CONTAINER_REGISTRY }}
+
+      - name: Build and Publish Docker Image
+        working-directory: dev-summit
+        run: |
+          set -e
+          IMAGE_TAG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="${{ env.CONTAINER_REGISTRY }}/braided-flow-434519-s1/my-coworker-docker-repo/dev-summit:${IMAGE_TAG}"
+          podman build --pull=always --log-level=info -f Dockerfile -t "$IMAGE_NAME" .
+          podman push "$IMAGE_NAME"
+
+  apply-terraform:
+    name: Apply Terraform
+    needs: publish-docker-image
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: braided-flow-434519-s1
+          service_account: github-actions@braided-flow-434519-s1.iam.gserviceaccount.com
+          workload_identity_provider: projects/542761338020/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github-actions-provider
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: ">= 363.0.0"
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: terraform/deployment
+        run: |
+          terraform init
+          terraform workspace select -or-create $(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+
+      - name: Terraform format
+        working-directory: terraform/deployment
+        run: |
+          terraform fmt -check
+
+      - name: Terraform validate
+        working-directory: terraform/deployment
+        run: |
+          terraform validate
+
+      - name: Terraform apply
+        working-directory: terraform/deployment
+        run: |
+          terraform apply -auto-approve
