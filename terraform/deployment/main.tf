@@ -34,7 +34,7 @@ resource "google_cloud_run_v2_service" "dev_summit_backend" {
 
       liveness_probe {
         http_get {
-          path = "/health"
+          path = "/"
           port = local.port
         }
         period_seconds        = 60
@@ -43,7 +43,7 @@ resource "google_cloud_run_v2_service" "dev_summit_backend" {
 
       startup_probe {
         http_get {
-          path = "/health"
+          path = "/"
           port = local.port
         }
         period_seconds        = 5
