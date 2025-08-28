@@ -109,7 +109,7 @@ fun HTML.createBody(
       createSlideHeader()
       id = "main"
       classes = setOf("bg-white", "rounded", "shadow", "d-flex", "flex-column", "justify-content-center", "align-items-stretch", "w-100")
-      style = "min-width: 2000px; max-width: 80vh; min-height: 100vh; height: 70vh; display: flex; flex-direction: column;"
+      style = "max-width: 65vw; min-width: 300px; min-height: 100vh; height: 70vh; width: 100%; display: flex; flex-direction: column;"
       div {
         id = "slide-content"
         style = "flex: 1 0 auto; width: 100%;"
