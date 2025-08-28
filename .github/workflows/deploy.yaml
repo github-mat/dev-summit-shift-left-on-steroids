@@ -60,8 +60,8 @@ jobs:
           set -e
           IMAGE_TAG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
           IMAGE_NAME="${{ env.CONTAINER_REGISTRY }}/braided-flow-434519-s1/my-coworker-docker-repo/dev-summit:${IMAGE_TAG}"
-          podman build --pull=always --log-level=info -f Dockerfile -t "$IMAGE_NAME" .
-          podman push "$IMAGE_NAME"
+          docker build --pull --log-level=info -f Dockerfile -t "$IMAGE_NAME" .
+          docker push "$IMAGE_NAME"
 
   apply-terraform:
     name: Apply Terraform
