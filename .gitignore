@@ -27,4 +27,12 @@ replay_pid*
 .kotlin/
 # JetBrains IDEs
 /.idea/
-/.terrafrom/
+/.terraform/
+
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
+.terraform/
+*.tfplan

@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-COPY build.gradle.kts settings.gradle.kts gradle.properties gradlew ./
+COPY build.gradle.kts settings.gradle.kts gradlew ./
 COPY gradle ./gradle
 COPY src ./src
 
