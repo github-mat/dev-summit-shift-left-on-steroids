@@ -1,5 +1,5 @@
 locals {
-  port = 8080
+  port = 5000
 }
 resource "google_service_account" "dev_summit_a_service_account" {
   account_id   = "mcp-server-a-${terraform.workspace}"

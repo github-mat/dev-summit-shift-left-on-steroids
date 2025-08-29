@@ -36,3 +36,7 @@ replay_pid*
 crash.log
 .terraform/
 *.tfplan
+
+# venv
+.envrc
+.venv
