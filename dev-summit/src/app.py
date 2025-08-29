@@ -65,12 +65,18 @@ TEMPLATE = """
             height: auto;
             z-index: 100;
         }
-        html, body { height: 100%; margin: 0; padding: 0; }
-    body { font-family: sans-serif; margin: 0; background: #fff; color: #222; height: 100vh; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body { font-family: sans-serif; margin: 0; background: #fff; color: #222; height: 100vh; }
         .slide {
             width: 95vw;
             height: 85vh;
-            margin: 2.5vh auto 0 auto;
+            # margin: 2.5vh auto 0 auto;
+            margin: 0 auto;
             background: #fff;
             padding: 3vw 3vw 2vw 3vw;
             border-radius: 10px;
