@@ -1,4 +1,4 @@
 # Demo
 
-![KI](images/vscode-icon.svg.png){ width=400 }
+![KI](images/vscode-icon.png){ width=200 }
 

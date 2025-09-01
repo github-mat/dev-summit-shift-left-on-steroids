@@ -40,3 +40,4 @@ crash.log
 # venv
 .envrc
 .venv
+.DS_Store
