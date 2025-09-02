@@ -72,6 +72,11 @@ def render_static_html():
                 '{% if next_slide %}\n                    <a href="{{ url_for(\'show_slide\', slide_num=next_slide) }}">Weiter &raquo;</a>\n                {% else %}\n                    <a class="disabled">Weiter &raquo;</a>\n                {% endif %}',
                 '<a class="disabled">Weiter &raquo;</a>'
             )
+        # Speichere die erste Slide zusätzlich als index.html
+        if idx == 1:
+            index_path = os.path.join(OUTPUT_DIR, "index.html")
+            with open(index_path, "w", encoding="utf-8") as out:
+                out.write(page)
         out_path = os.path.join(OUTPUT_DIR, f"slide{idx}.html")
         with open(out_path, "w", encoding="utf-8") as out:
             out.write(page)
