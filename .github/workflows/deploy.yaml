@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add dev-summit/static_html
+          git add docs
           git commit -m "Update static HTML [skip ci]" || echo "No changes to commit"
           git push
 
