@@ -23,6 +23,35 @@ jobs:
       - name: Run CI
         run: echo "Run your CI steps here"
 
+  build-static-html:
+    name: Build static HTML and commit
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install markdown
+
+      - name: Generate static HTML
+        run: python dev-summit/src/generate_static.py
+
+      - name: Commit and push static HTML
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dev-summit/static_html
+          git commit -m "Update static HTML [skip ci]" || echo "No changes to commit"
+          git push
+
   publish-docker-image:
     name: Publish Docker Images
     needs: ci
