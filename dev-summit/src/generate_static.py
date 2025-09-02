@@ -8,7 +8,7 @@ import shutil
 
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
 TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template.html")
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "static_html")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../../", "docs")
 
 
 def get_slide_files():
