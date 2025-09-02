@@ -2,8 +2,8 @@ locals {
   port = 8080
 }
 resource "google_service_account" "dev_summit_a_service_account" {
-  account_id   = "mcp-server-a-${terraform.workspace}"
-  display_name = "MCP Server A Service Account in ${terraform.workspace}"
+  account_id   = "dev-summit-${terraform.workspace}"
+  display_name = "Dev Summit Service Account for ${terraform.workspace}"
 }
 
 resource "google_cloud_run_v2_service" "dev_summit_backend" {
@@ -18,6 +18,9 @@ resource "google_cloud_run_v2_service" "dev_summit_backend" {
 
   template {
     service_account = google_service_account.dev_summit_a_service_account.email
+    annotations = {
+      "redeploy-trigger" = timestamp()
+    }
 
     containers {
       image = "${var.container_registry}/dev-summit:${terraform.workspace}"
