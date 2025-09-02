@@ -4,9 +4,13 @@ on:
     branches:
       - main
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
     branches:
       - main
+
+concurrency:
+  group: terraform-${{ github.ref_name }}
+  cancel-in-progress: false
 
 env:
   CONTAINER_REGISTRY: europe-west3-docker.pkg.dev
@@ -36,8 +40,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      
+          python-version: "3.11"
+
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh
