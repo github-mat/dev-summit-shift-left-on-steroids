@@ -2,7 +2,6 @@ import os
 
 from flask import (
     Flask,
-    render_template,
     render_template_string,
     abort,
     redirect,
@@ -29,17 +28,17 @@ def slide_videos(filename):
     return send_from_directory(os.path.join(SLIDES_DIR, "videos"), filename)
 
 
-
-
-
 import re
 
+
 def get_slide_files():
-    
+
     files = [f for f in os.listdir(SLIDES_DIR) if f.endswith(".md")]
+
     def extract_number(filename):
         match = re.match(r"(\d+)", os.path.splitext(filename)[0])
         return int(match.group(1)) if match else 0
+
     files = sorted(files, key=extract_number)
     return files
 
@@ -80,34 +79,41 @@ def show_slide(slide_num):
 
 # PDF Export Endpoint (Querformat, Bilder eingebettet)
 from flask import Response
+
 try:
     from weasyprint import HTML, CSS
+
     WEASYPRINT_AVAILABLE = True
 except ImportError:
     WEASYPRINT_AVAILABLE = False
 
+
 @app.route("/export/pdf")
 def export_pdf():
     if not WEASYPRINT_AVAILABLE:
-        return "WeasyPrint ist nicht installiert. Bitte 'weasyprint' in requirements.txt aufnehmen.", 500
+        return (
+            "WeasyPrint ist nicht installiert. Bitte 'weasyprint' in requirements.txt aufnehmen.",
+            500,
+        )
     import base64, mimetypes
+
     files = get_slide_files()
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
 
     def img_to_data_url(img_path):
         if not os.path.exists(img_path):
-            return ''
+            return ""
         mime, _ = mimetypes.guess_type(img_path)
-        with open(img_path, 'rb') as img_f:
-            b64 = base64.b64encode(img_f.read()).decode('utf-8')
-        return f'data:{mime};base64,{b64}'
+        with open(img_path, "rb") as img_f:
+            b64 = base64.b64encode(img_f.read()).decode("utf-8")
+        return f"data:{mime};base64,{b64}"
 
     # Regex für verschiedene Bildpfade: /slide/images/foo.png, images/foo.png, ./images/foo.png
     img_regex = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
     # PDF-optimiertes CSS (kein position: fixed, keine Viewport-Größen)
-    pdf_css = '''
+    pdf_css = """
     @page { size: A4 landscape; margin: 1cm; }
     body { font-family: sans-serif; background: #fff; color: #222; }
     .slide {
@@ -148,20 +154,20 @@ def export_pdf():
     }
     ul, ol { margin-top: 1em; margin-bottom: 1em; }
     li { margin-bottom: 0.7em; }
-    '''
+    """
 
     # Logos als Base64 einbetten
     def logo_data_url(filename):
         path = os.path.join(images_dir, filename)
         if not os.path.exists(path):
-            return ''
+            return ""
         mime, _ = mimetypes.guess_type(path)
-        with open(path, 'rb') as img_f:
-            b64 = base64.b64encode(img_f.read()).decode('utf-8')
-        return f'data:{mime};base64,{b64}'
+        with open(path, "rb") as img_f:
+            b64 = base64.b64encode(img_f.read()).decode("utf-8")
+        return f"data:{mime};base64,{b64}"
 
-    materna_logo = logo_data_url('materna-logo.png')
-    summit_logo = logo_data_url('summit-logo.svg')
+    materna_logo = logo_data_url("materna-logo.png")
+    summit_logo = logo_data_url("summit-logo.svg")
 
     slides_html = []
     for idx, filename in enumerate(files, 1):
@@ -178,17 +184,13 @@ def export_pdf():
             else:
                 return match.group(0)
 
-        html_content = re.sub(
-            img_regex,
-            replace_img,
-            html_content
-        )
+        html_content = re.sub(img_regex, replace_img, html_content)
         slide_html = f'<div class="slide">'
         slide_html += f'<img src="{summit_logo}" alt="Summit Logo" class="summit-logo">'
-        slide_html += f'<h2>Folie {idx} / {len(files)}</h2>{html_content}</div>'
+        slide_html += f"<h2>Folie {idx} / {len(files)}</h2>{html_content}</div>"
         slides_html.append(slide_html)
 
-    pdf_html = f'''<!DOCTYPE html>
+    pdf_html = f"""<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -199,11 +201,15 @@ def export_pdf():
     <img src="{materna_logo}" alt="Materna Logo" class="materna-logo">
     {''.join(slides_html)}
 </body>
-</html>'''
+</html>"""
     pdf = HTML(string=pdf_html).write_pdf()
-    return Response(pdf, mimetype='application/pdf', headers={
-        'Content-Disposition': 'attachment; filename=devsummit_praesentation.pdf'
-    })
+    return Response(
+        pdf,
+        mimetype="application/pdf",
+        headers={
+            "Content-Disposition": "attachment; filename=devsummit_praesentation.pdf"
+        },
+    )
 
 
 if __name__ == "__main__":
