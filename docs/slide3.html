@@ -117,13 +117,12 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <h1>Warm-up</h1>
-<ul>
-<li>Software wird schneller entwickelt</li>
-<li>Anwendungen werden komplexer</li>
-<li>Tests decken nicht alles ab</li>
-<li>Änderungen in komplexen Codebasen schwer vollständig zu überschauen</li>
-</ul>
+        <h1>KI - unser Helfer, Freund, Partner, Retter</h1>
+<!-- <div style="color: red; font-weight: bold;">
+KI - unser Helfer, Freund, Partner, Retter
+</div> -->
+
+<p><img alt="KI" src="images/ai-icon.png" width="200" /></p>
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -135,5 +134,23 @@
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>

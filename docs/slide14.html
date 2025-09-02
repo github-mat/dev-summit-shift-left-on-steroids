@@ -117,20 +117,22 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <h1>Copilot Agent Mode</h1>
+        <!-- # Qualität -->
+
 <table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img alt="KI" src="images/agent-mode-screenshot.png" width="500" /></td>
-<td>- analyzing your codebase <br> - reading relevant files <br> - proposing file edits <br> - running terminal commands and tests</td>
-</tr>
-</tbody>
+    <tr>
+        <td style="vertical-align:top; width: 40%;">
+            <img src="images/quality-spongebob.jpg" alt="Qualität" style="max-width: 100%; height: auto;" />
+        </td>
+        <td style="vertical-align:top; width: 60%;">
+            <ul>
+                <li>schnelle Testergebnisse</li>
+                <li>externe Quellen</li>
+                <li>Code (Kontext)</li>
+                <li>Funktionen</li>
+            </ul>
+        </td>
+    </tr>
 </table>
     </div>
     <div class="footer">
@@ -143,5 +145,23 @@
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>
