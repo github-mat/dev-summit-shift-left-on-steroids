@@ -41,3 +41,4 @@ crash.log
 .envrc
 .venv
 .DS_Store
+.tmp

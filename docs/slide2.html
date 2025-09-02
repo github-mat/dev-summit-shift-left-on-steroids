@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>DevSummit 2025</title>
+    <style>
+        .materna-logo {
+            position: fixed;
+            right: 2vw;
+            bottom: 9vh;
+            width: 120px;
+            max-width: 15vw;
+            max-height: 12vh;
+            height: auto;
+            z-index: 101;
+            pointer-events: none;
+        }
+        .summit-logo {
+            position: fixed;
+            top: 2vh;
+            right: 2vw;
+            width: 120px;
+            max-width: 15vw;
+            max-height: 12vh;
+            height: auto;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .summit-logo {
+            position: fixed;
+            top: 2vh;
+            right: 2vw;
+            width: 120px;
+            height: auto;
+            z-index: 100;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body { font-family: sans-serif; margin: 0; background: #fff; color: #222; height: 100vh; }
+        .slide {
+            width: 95vw;
+            height: 85vh;
+            margin: 0 auto;
+            background: #fff;
+            padding: 3vw 3vw 2vw 3vw;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ccc8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        .footer {
+            width: 100vw;
+            margin: 0;
+            height: 7vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            background: #787777;
+            color: #222;
+            padding: 0 2vw;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .footer-title {
+            color: #fff;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            flex: 1;
+            text-align: left;
+        }
+        .footer-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: #fff;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5em;
+        }
+        .nav a {
+            color: #fff;
+            margin: 0 0.5em;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: color 0.2s;
+        }
+        .nav a.disabled {
+            color: #666 !important;
+            pointer-events: none;
+            cursor: default;
+            text-decoration: none;
+        }
+        .nav a:not(.disabled):hover { text-decoration: underline; }
+        ul, ol {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+        li {
+            margin-bottom: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
+    <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
+    <div class="slide">
+        <h1>Speaker</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Constantin" src="images/constantin.jpg" width="200" /></td>
+<td><img alt="Max" src="images/max.jpg" width="200" /></td>
+</tr>
+<tr>
+<td><strong>Constantin Ponfick</strong><br>DevOps-Engineer</td>
+<td><strong>Maximilian Sparenberg</strong><br>DevOps-Engineer</td>
+</tr>
+</tbody>
+</table>
+    </div>
+    <div class="footer">
+        <div class="footer-title">©Materna</div>
+        <div class="footer-right">
+            <div class="nav">
+                <a href="slide1.html">&laquo; Zurück</a>
+                <span>Folie 2 / 18</span>
+                <a href="slide3.html">Weiter &raquo;</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
