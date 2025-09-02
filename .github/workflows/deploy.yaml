@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: terraform-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+
 env:
   CONTAINER_REGISTRY: europe-west3-docker.pkg.dev
 
@@ -97,7 +101,7 @@ jobs:
         working-directory: dev-summit
         run: |
           set -e
-          IMAGE_TAG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          IMAGE_TAG=$(echo "${{ github.head_ref || github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
           IMAGE_NAME="${{ env.CONTAINER_REGISTRY }}/braided-flow-434519-s1/my-coworker-docker-repo/dev-summit:${IMAGE_TAG}"
           docker build --pull -f Dockerfile -t "$IMAGE_NAME" .
           docker push "$IMAGE_NAME"
@@ -135,7 +139,7 @@ jobs:
         working-directory: terraform/deployment
         run: |
           terraform init
-          terraform workspace select -or-create $(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          terraform workspace select -or-create $(echo "${{ github.head_ref || github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
 
       - name: Terraform format
         working-directory: terraform/deployment

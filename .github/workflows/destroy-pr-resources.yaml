@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: terraform-${{ github.head_ref }}
+  cancel-in-progress: false
+
 jobs:
   destroy-terraform:
     name: Destroy Terraform Resources
@@ -31,7 +35,7 @@ jobs:
         working-directory: terraform/deployment
         run: |
           terraform init
-          terraform workspace select -or-create $(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          terraform workspace select -or-create $(echo "${{ github.head_ref }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
       - name: Terraform destroy
         working-directory: terraform/deployment
         run: |
