@@ -38,17 +38,17 @@ jobs:
       - name: Check code formatting with Black
         run: |
           cd dev-summit
-          black --config pyproject.toml --check src/**/*.py
+          black --config pyproject.toml --check src/
 
       - name: Check import sorting with isort
         run: |
           cd dev-summit
-          isort --settings-file=pyproject.toml --check-only src/**/*.py
+          isort --settings-file=pyproject.toml --check-only src/
 
       - name: Run linting with Pylint
         run: |
           cd dev-summit
-          pylint --rcfile=pyproject.toml src/**/*.py
+          pylint --rcfile=pyproject.toml src/
 
   build-static-html:
     name: Build static HTML and commit
