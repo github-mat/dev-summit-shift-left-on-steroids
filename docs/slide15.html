@@ -117,21 +117,26 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <!-- # Daten -->
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img alt="KI" src="images/daten-meme.jpg" width="400" /></td>
-<td>- schnelle Testergebnisse <br> - externe Quellen <br> - Code (Kontext) <br> - Funktionen</td>
-</tr>
-</tbody>
+        <h1>Steuerung im Nebel: Wie KI-Agenten navigieren</h1>
+<table style="width:100%; text-align:center; vertical-align:middle;">
+    <h2>MCP vs. A2A</h2>
+    <tr>
+        <td style="width:33%; vertical-align:middle; text-align:right; padding-right:2em;">
+            <ul style="list-style-type: disc; font-size:1.2em;">
+                <li><b>Digitale Seekarten & GPS-Historie</b>: kennt die Historie, frühere Gefahren und hat das Ziel im Auge</li>
+                <li><b>Schiffs-Telemetrie</b>: liefert Echtzeitdaten über das Schiff und die Ladung</li>
+            </ul>
+        </td>
+        <td style="width:34%; vertical-align:middle;">
+            <img src="images/mcp-a2a.png" alt="MCP vs. A2A" style="max-width: 100%; height: 320px; object-fit: contain;" />
+        </td>
+        <td style="width:33%; vertical-align:middle; text-align:left; padding-left:2em;">
+            <ul style="list-style-type: disc; font-size:1.2em;">
+                <li><b>Navigations-Agent</b>: kommuniziert mit dem Maschinenraum-Agenten für die beste Route</li>
+                <li><b>Kommunikations-Agent</b>: hört den Funk ab und warnt das Team</li>
+            </ul>
+        </td>
+    </tr>
 </table>
     </div>
     <div class="footer">
@@ -144,5 +149,23 @@
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>

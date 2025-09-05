@@ -117,12 +117,13 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <h1>KI - unser Helfer, Freund, Partner, Retter</h1>
-<!-- <div style="color: red; font-weight: bold;">
-KI - unser Helfer, Freund, Partner, Retter
-</div> -->
-
-<p><img alt="KI" src="images/ai-icon.png" width="200" /></p>
+        <h1>Bug-Free by Design?</h1>
+<ul>
+<li><strong>Definition:</strong> Ein Ansatz, der darauf abzielt, Fehler zu verhindern, bevor sie überhaupt entstehen oder in die Codebasis gelangen.<br></li>
+<li><strong>Paradigmenwechsel:</strong> Weg von der reinen Fehlerfindung (Testing, Debugging) hin zur Fehlervermeidung im Design- und Entwicklungsprozess.</li>
+<li><strong>Kernidee:</strong> Probleme und potenzielle Fehlerquellen automatisiert erkennen und beheben, bevor sie zu echten Bugs werden.</li>
+<li><strong>Ziel:</strong> Eine robustere, stabilere und qualitativ hochwertigere Software von Anfang an.</li>
+</ul>
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -134,5 +135,23 @@ KI - unser Helfer, Freund, Partner, Retter
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>

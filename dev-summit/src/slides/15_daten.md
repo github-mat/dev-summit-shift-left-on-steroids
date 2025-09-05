@@ -1,4 +1,5 @@
 
+
 |                                             |                                                                                                             |
 | ------------------------------------------: | :---------------------------------------------------------------------------------------------------------- |
 | ![KI](images/daten-meme.jpg){{ width=50%  } | <ul><li>schnelle Testergebnisse</li><li>externe Quellen</li><li>Code (Kontext)</li><li>Funktionen</li></ul> |

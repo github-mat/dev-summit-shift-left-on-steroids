@@ -117,29 +117,8 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <h1>MCP &amp; A2A</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">MCP (Model Control Protocol)</th>
-<th style="text-align: left;">A2A (Agent-to-Agent)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Zentralisierte Architektur</strong></td>
-<td style="text-align: left;"><strong>Dezentrale Architektur</strong></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Indirekte Kommunikation</strong></td>
-<td style="text-align: left;"><strong>Direkte Kommunikation</strong></td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Geringe Autonomie der Agenten</strong></td>
-<td style="text-align: left;"><strong>Hohe Autonomie der Agenten</strong></td>
-</tr>
-</tbody>
-</table>
+        <h1>Demo</h1>
+<p><img alt="KI" src="images/vscode-icon.png" width="200" /></p>
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -151,5 +130,23 @@
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>

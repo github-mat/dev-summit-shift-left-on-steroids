@@ -117,8 +117,25 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <h1>Demo</h1>
-<p><img alt="KI" src="images/vscode-icon.png" width="200" /></p>
+        <h1>Der Leuchtturm für die Qualität von Morgen 💡</h1>
+<table>
+    <tr>
+        <td style="vertical-align:top; width: 40%;">
+            <img src="images/leuchtturm.png" alt="Leuchtturm" style="max-width: 100%; height: auto;" />
+        </td>
+        <td style="vertical-align:top; width: 60%;">
+            <ul>
+                <li><b>Dein KI-Copilot</b>: Intelligente Helfer werden zu unverzichtbaren Partnern in jeder Codezeile. 🤖</li>
+                <li><b>Grenzenlos innovativ</b>: Was heute unmöglich scheint, ist morgen unser Standard. Entfessle dein Potential! ✨</li>
+                <li><b>Qualität der Daten = Qualität der Software</b>: Informationen sind unser schärfstes Werkzeug. Nutze sie, um Exzellenz zu designen. 💎</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<!-- <div style="color: red; font-weight: bold;">
+KI - unser Helfer, Freund, Partner, Retter
+</div> -->
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -130,5 +147,23 @@
             </div>
         </div>
     </div>
+
+<script>
+// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    var navLinks = document.querySelectorAll('.nav a');
+    // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
+    if (e.key === 'ArrowLeft') {
+        if (navLinks[0] && !navLinks[0].classList.contains('disabled') && navLinks[0].getAttribute('href')) {
+            window.location.href = navLinks[0].getAttribute('href');
+        }
+    } else if (e.key === 'ArrowRight') {
+        if (navLinks[1] && !navLinks[1].classList.contains('disabled') && navLinks[1].getAttribute('href')) {
+            window.location.href = navLinks[1].getAttribute('href');
+        }
+    }
+});
+</script>
 </body>
 </html>
