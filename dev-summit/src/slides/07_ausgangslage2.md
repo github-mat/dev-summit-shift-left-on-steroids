@@ -1,4 +1,4 @@
 <!-- # Ausgangslage -->
 
-![KI](images/ausgangslage2.png){ width=100% }
+![KI](images/ausgangslage2.png){ width=80% height=auto .center}
 
