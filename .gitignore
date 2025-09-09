@@ -43,3 +43,4 @@ crash.log
 .DS_Store
 .tmp
 .mypy_cache/
+__pycache__

@@ -48,3 +48,9 @@ good-names = [
   "src",
   "idx",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["src"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = ["-v", "--tb=short"]
