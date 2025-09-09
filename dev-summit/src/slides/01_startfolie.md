@@ -1,7 +1,7 @@
 <!-- # Bug-Free-by-Design: Shift-Left on Steroids -->
 
 <!-- <video src="videos/startfolie.mp4" controls autoplay muted loop width="80%"></video> -->
-<!-- ![Deckblatt](images/titelfolie.png){ width=80% } -->
+<!-- ![Deckblatt](images/titelfolie.png){ width=80% height=auto .center} -->
 
 <table style="height: 420px; vertical-align: middle;">
 	<tr>

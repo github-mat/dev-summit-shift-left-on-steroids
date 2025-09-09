@@ -5,7 +5,7 @@
 		<td style="vertical-align:top; width: 40%;">
 			<img src="images/leuchtturm.png" alt="Leuchtturm" style="max-width: 100%; height: auto;" />
 		</td>
-		<td style="vertical-align:top; width: 60%;">
+		<td style="vertical-align:center; width: 60%;">
 			<ul>
 				<li><b>Dein KI-Copilot</b>: Intelligente Helfer werden zu unverzichtbaren Partnern in jeder Codezeile. 🤖</li>
 				<li><b>Grenzenlos innovativ</b>: Was heute unmöglich scheint, ist morgen unser Standard. Entfessle dein Potential! ✨</li>
