@@ -33,6 +33,9 @@ disable = ["C0116", "C0114"]
 [tool.pylint.format]
 max-line-length = 88
 
+[tool.pylint.master]
+ignore-patterns = ["test_.*\\.py$"]
+
 [tool.pylint.basic]
 good-names = [
   "i",

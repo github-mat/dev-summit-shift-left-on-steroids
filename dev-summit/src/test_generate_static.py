@@ -1,11 +1,12 @@
 import os
 import tempfile
+
 from generate_static import (
-    get_slide_files,
-    get_html_content,
-    prepare_page,
-    PREV_NAV_TEMPLATE,
     NEXT_NAV_TEMPLATE,
+    PREV_NAV_TEMPLATE,
+    get_html_content,
+    get_slide_files,
+    prepare_page,
 )
 
 
