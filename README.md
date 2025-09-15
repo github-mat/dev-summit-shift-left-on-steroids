@@ -13,12 +13,7 @@ This project uses [UV](https://github.com/astral-sh/uv) for fast Python package 
 
 ### Installing UV
 
-```bash
-# Install UV
-pip install uv
-```
-
-Or follow the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+Follow the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
 ### Development Workflow
 
@@ -62,14 +57,6 @@ Or follow the [official installation guide](https://docs.astral.sh/uv/getting-st
    uv run python src/generate_static.py
    ```
 
-### Dependencies
-
-This project uses:
-- **Production**: Flask, Markdown, WeasyPrint
-- **Development**: Black, Pylint, isort, pytest
-
-All dependencies are managed through `pyproject.toml` and locked in `uv.lock` for reproducible builds.
-
 ### Docker
 
 The project includes a Dockerfile that uses UV for dependency management:
@@ -79,9 +66,3 @@ docker build -t dev-summit .
 docker run -p 8080:8080 dev-summit
 ```
 
-## Benefits of UV
-
-- ⚡ **10-100x faster** dependency resolution and installation
-- 🔒 **Better lock file management** with `uv.lock` for reproducible builds  
-- 🛠️ **Unified tooling** for dependency management, virtual environments, and project management
-- 📦 **Modern Python packaging** standards with proper `pyproject.toml` integration

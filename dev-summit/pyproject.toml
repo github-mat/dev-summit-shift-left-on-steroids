@@ -15,10 +15,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "pylint", 
-    "isort",
-    "pytest",
+    "black>=25.1.0",
+    "pylint>=3.3.8", 
+    "isort>=6.0.1",
+    "pytest>=8.4.2",
 ]
 
 [tool.black]
@@ -80,3 +80,5 @@ testpaths = ["src"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = ["-v", "--tb=short"]
+
+

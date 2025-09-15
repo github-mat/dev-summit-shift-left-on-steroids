@@ -247,12 +247,12 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "black", marker = "extra == 'dev'" },
+    { name = "black", marker = "extra == 'dev'", specifier = ">=25.1.0" },
     { name = "flask" },
-    { name = "isort", marker = "extra == 'dev'" },
+    { name = "isort", marker = "extra == 'dev'", specifier = ">=6.0.1" },
     { name = "markdown" },
-    { name = "pylint", marker = "extra == 'dev'" },
-    { name = "pytest", marker = "extra == 'dev'" },
+    { name = "pylint", marker = "extra == 'dev'", specifier = ">=3.3.8" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.2" },
     { name = "weasyprint" },
 ]
 provides-extras = ["dev"]
