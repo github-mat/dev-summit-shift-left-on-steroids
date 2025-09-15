@@ -8,6 +8,7 @@ from flask import (
     Flask,
     Response,
     abort,
+    jsonify,
     redirect,
     render_template_string,
     send_from_directory,
@@ -55,12 +56,53 @@ def get_slide_files():
     return files
 
 
+def extract_slide_title(filename):
+    """Extract the title from the slide filename"""
+    # Remove the .md extension and extract the part after the number
+    name_without_ext = os.path.splitext(filename)[0]
+    
+    # Remove the leading number and underscore (e.g., "01_" from "01_startfolie.md")
+    match = re.match(r"(\d+)_(.+)", name_without_ext)
+    if match:
+        title_part = match.group(2)
+        # Replace hyphens and underscores with spaces and title case
+        title = title_part.replace('-', ' ').replace('_', ' ')
+        # Convert to title case
+        return title.title()
+    
+    # Fallback: just use the filename without extension
+    return name_without_ext.replace('-', ' ').replace('_', ' ').title()
+
+
+def get_slide_metadata():
+    """Get metadata for all slides including titles for thumbnail navigation"""
+    files = get_slide_files()
+    metadata = []
+    
+    for idx, filename in enumerate(files, 1):
+        title = extract_slide_title(filename)
+        metadata.append({
+            'number': idx,
+            'filename': filename,
+            'title': title
+        })
+    
+    return metadata
+
+
 @app.route("/")
 def index():
     files = get_slide_files()
     if not files:
         return NO_SLIDES_FOUND_HTML
     return redirect(url_for("show_slide", slide_num=1))
+
+
+@app.route("/api/slides/metadata")
+def slides_metadata():
+    """API endpoint to get metadata for all slides for thumbnail navigation"""
+    metadata = get_slide_metadata()
+    return jsonify(metadata)
 
 
 @app.route("/slide/<int:slide_num>")
@@ -75,6 +117,10 @@ def show_slide(slide_num):
     html_content = markdown.markdown(md_content, extensions=["extra"])
     prev_slide = slide_num - 1 if slide_num > 1 else None
     next_slide = slide_num + 1 if slide_num < total else None
+    
+    # Get metadata for all slides for thumbnail navigation
+    slide_metadata = get_slide_metadata()
+    
     # Template-Pfad relativ zu src
     template_path = os.path.join(os.path.dirname(__file__), "template.html")
     with open(template_path, encoding="utf-8") as tpl:
@@ -86,6 +132,7 @@ def show_slide(slide_num):
         total_slides=total,
         prev_slide=prev_slide,
         next_slide=next_slide,
+        slide_metadata=slide_metadata,
     )
 
 

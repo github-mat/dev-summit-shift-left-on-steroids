@@ -62,6 +62,12 @@
             align-items: center;
             overflow: hidden;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .slide.sidebar-open {
+            width: calc(95vw - 300px);
+            margin-left: calc(300px + 2.5vw);
         }
 
         .footer {
@@ -79,6 +85,12 @@
             padding: 0 2vw;
             box-sizing: border-box;
             z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .footer.sidebar-open {
+            width: calc(100vw - 300px);
+            left: 300px;
         }
 
         .footer-title {
@@ -131,10 +143,231 @@
         li {
             margin-bottom: 0.7em;
         }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background: #fff;
+            border-right: 2px solid #ccc;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .sidebar-close {
+            background: rgba(108, 117, 125, 0.1);
+            border: none;
+            border-radius: 4px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-close:hover {
+            background: rgba(108, 117, 125, 0.2);
+            color: #495057;
+        }
+
+        .sidebar-content {
+            padding: 10px 0;
+        }
+
+        .thumbnail-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .thumbnail-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .thumbnail-item.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .thumbnail-item.active .thumbnail-number {
+            background-color: white;
+            color: #007bff;
+        }
+
+        .thumbnail-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .thumbnail-title {
+            flex: 1;
+            font-size: 0.9em;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .sidebar-toggle-toolbar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle-toolbar:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .sidebar-toggle-toolbar .hamburger-line {
+            width: 18px;
+            height: 2px;
+            background: #fff;
+        }
+
+        .sidebar-toggle-toolbar.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(3px, 3px);
+        }
+
+        .sidebar-toggle-toolbar.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .sidebar-toggle-toolbar.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                left: -280px;
+            }
+            
+            .slide.sidebar-open {
+                width: calc(95vw - 280px);
+                margin-left: calc(280px + 2.5vw);
+            }
+            
+            .footer.sidebar-open {
+                width: calc(100vw - 280px);
+                left: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 260px;
+                left: -260px;
+            }
+            
+            .slide.sidebar-open {
+                width: calc(95vw - 260px);
+                margin-left: calc(260px + 2.5vw);
+            }
+            
+            .footer.sidebar-open {
+                width: calc(100vw - 260px);
+                left: 260px;
+            }
+            
+            .thumbnail-item {
+                padding: 10px 15px;
+            }
+            
+            .thumbnail-number {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8em;
+                margin-right: 10px;
+            }
+            
+            .thumbnail-title {
+                font-size: 0.85em;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Thumbnail Navigation Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Slides</h3>
+            <button id="sidebar-close" class="sidebar-close">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            {% for slide in slide_metadata %}
+            <div class="thumbnail-item {% if slide.number == slide_num %}active{% endif %}" 
+                 data-slide="{{ slide.number }}" 
+                 onclick="navigateToSlide({{ slide.number }})">
+                <div class="thumbnail-number">{{ slide.number }}</div>
+                <div class="thumbnail-title">{{ slide.title }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
@@ -144,6 +377,11 @@
         <div class="footer-title">©Materna</div>
         <div class="footer-right">
             <div class="nav">
+                <button id="sidebar-toggle" class="sidebar-toggle-toolbar" onclick="toggleSidebar()">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
                 {% if prev_slide %}
                 <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">&laquo; Zurück</a>
                 {% else %}
@@ -160,9 +398,74 @@
     </div>
 
 <script>
-// Tastatur-Navigation: Links/Rechts für Slide-Wechsel
+// Sidebar functionality
+let sidebarOpen = false;
+
+// Check if sidebar should be open on page load
+window.addEventListener('DOMContentLoaded', function() {
+    const shouldBeOpen = sessionStorage.getItem('sidebarOpen') === 'true';
+    if (shouldBeOpen) {
+        const sidebar = document.getElementById('sidebar');
+        const slide = document.querySelector('.slide');
+        const footer = document.querySelector('.footer');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        
+        sidebarOpen = true;
+        sidebar.classList.add('open');
+        slide.classList.add('sidebar-open');
+        footer.classList.add('sidebar-open');
+        toggleBtn.classList.add('active');
+    }
+});
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const slide = document.querySelector('.slide');
+    const footer = document.querySelector('.footer');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    
+    sidebarOpen = !sidebarOpen;
+    
+    // Store sidebar state in session storage
+    sessionStorage.setItem('sidebarOpen', sidebarOpen.toString());
+    
+    if (sidebarOpen) {
+        sidebar.classList.add('open');
+        slide.classList.add('sidebar-open');
+        footer.classList.add('sidebar-open');
+        toggleBtn.classList.add('active');
+    } else {
+        sidebar.classList.remove('open');
+        slide.classList.remove('sidebar-open');
+        footer.classList.remove('sidebar-open');
+        toggleBtn.classList.remove('active');
+    }
+}
+
+function closeSidebar() {
+    if (sidebarOpen) {
+        sessionStorage.setItem('sidebarOpen', 'false');
+        toggleSidebar();
+    }
+}
+
+function navigateToSlide(slideNumber) {
+    // Navigate to the slide without closing sidebar
+    window.location.href = '/slide/' + slideNumber;
+}
+
+// Keyboard navigation: ESC to close sidebar
 document.addEventListener('keydown', function(e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+    if (e.key === 'Escape' && sidebarOpen) {
+        closeSidebar();
+        return;
+    }
+    
+    // Existing arrow key navigation (only when sidebar is closed and no inputs focused)
+    if (sidebarOpen || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+    }
+    
     var navLinks = document.querySelectorAll('.nav a');
     // navLinks[0] = Zurück, navLinks[1] = Weiter (immer diese Reihenfolge)
     if (e.key === 'ArrowLeft') {
@@ -174,6 +477,28 @@ document.addEventListener('keydown', function(e) {
             window.location.href = navLinks[1].getAttribute('href');
         }
     }
+});
+
+// Handle clicks on sidebar content to prevent event bubbling
+document.getElementById('sidebar').addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+// Add click handler for the close button
+document.getElementById('sidebar-close').addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeSidebar();
+});
+
+// Close sidebar when clicking outside of it
+document.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    
+    if (sidebarOpen && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        closeSidebar();
+    }
+});
 });
 </script>
 </body>
