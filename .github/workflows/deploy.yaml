@@ -29,26 +29,28 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install UV
+        uses: astral-sh/setup-uv@v4
+
       - name: Install dependencies
         run: |
           cd dev-summit
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+          uv sync --dev
 
       - name: Check code formatting with Black
         run: |
           cd dev-summit
-          black --config pyproject.toml --check src/
+          uv run black --config pyproject.toml --check src/
 
       - name: Check import sorting with isort
         run: |
           cd dev-summit
-          isort --settings-file=pyproject.toml --check-only src/
+          uv run isort --settings-file=pyproject.toml --check-only src/
 
       - name: Run linting with Pylint
         run: |
           cd dev-summit
-          pylint --rcfile=pyproject.toml src/
+          uv run pylint --rcfile=pyproject.toml src/
 
   build-static-html:
     name: Build static HTML and commit
@@ -75,11 +77,18 @@ jobs:
       - name: Set git to use SSH
         run: git remote set-url origin git@github.com:${{ github.repository }}.git
 
+      - name: Install UV
+        uses: astral-sh/setup-uv@v4
+
       - name: Install dependencies
-        run: pip install markdown
+        run: |
+          cd dev-summit
+          uv sync
 
       - name: Generate static HTML
-        run: python dev-summit/src/generate_static.py
+        run: |
+          cd dev-summit
+          uv run python src/generate_static.py
 
       - name: Commit and push static HTML
         run: |

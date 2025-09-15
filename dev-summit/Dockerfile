@@ -9,14 +9,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install UV package manager
+RUN pip install --no-cache-dir uv
+
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy dependency configuration files first for better Docker layer caching
+COPY pyproject.toml uv.lock ./
 
-# Copy application code
+# Install dependencies using UV (production only)
+RUN uv sync --no-dev
+
+# Copy application source code
 COPY src/ ./
 
-# Start the Python application
-CMD ["python", "app.py"]
+# Use UV to run the application
+CMD ["uv", "run", "python", "app.py"]
