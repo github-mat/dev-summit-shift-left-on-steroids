@@ -1,8 +1,11 @@
 locals {
   port = 8080
+  # Generate deterministic short identifier from workspace name
+  workspace_hash = substr(sha256(terraform.workspace), 0, 12)
+  account_id     = "dev-summit-${local.workspace_hash}"
 }
-resource "google_service_account" "dev_summit_a_service_account" {
-  account_id   = "dev-summit-${terraform.workspace}"
+resource "google_service_account" "dev_summit_service_account" {
+  account_id   = local.account_id
   display_name = "Dev Summit Service Account for ${terraform.workspace}"
 }
 
@@ -17,7 +20,7 @@ resource "google_cloud_run_v2_service" "dev_summit_backend" {
 
 
   template {
-    service_account = google_service_account.dev_summit_a_service_account.email
+    service_account = google_service_account.dev_summit_service_account.email
     annotations = {
       "redeploy-trigger" = timestamp()
     }
@@ -66,7 +69,7 @@ resource "google_cloud_run_v2_service" "dev_summit_backend" {
   }
 }
 
-resource "google_cloud_run_service_iam_binding" "mcp_server_a" {
+resource "google_cloud_run_service_iam_binding" "dev_summit_backend_invoker" {
   location = google_cloud_run_v2_service.dev_summit_backend.location
   project  = google_cloud_run_v2_service.dev_summit_backend.project
   service  = google_cloud_run_v2_service.dev_summit_backend.name

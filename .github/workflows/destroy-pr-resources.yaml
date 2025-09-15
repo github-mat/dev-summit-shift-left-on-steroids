@@ -31,12 +31,18 @@ jobs:
           version: ">= 363.0.0"
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v3
+      - name: Set workspace name
+        run: |
+          WORKSPACE_NAME=$(echo "${{ github.head_ref }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "WORKSPACE_NAME=$WORKSPACE_NAME" >> $GITHUB_ENV
       - name: Terraform init
         working-directory: terraform/deployment
         run: |
           terraform init
-          terraform workspace select -or-create $(echo "${{ github.head_ref }}" | sed 's/[^a-zA-Z0-9._-]/-/g' | tr '[:upper:]' '[:lower:]')
+          terraform workspace select -or-create ${{ env.WORKSPACE_NAME }}
       - name: Terraform destroy
         working-directory: terraform/deployment
         run: |
           terraform destroy -auto-approve
+          terraform workspace select default
+          terraform workspace delete ${{ env.WORKSPACE_NAME }}
