@@ -7,35 +7,34 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Initial Setup
-- Install Python dependencies:
+- Install Python dependencies using UV:
   - `cd dev-summit`
-  - `pip install -r requirements.txt` -- takes ~13 seconds
-  - `pip install -r requirements-dev.txt` -- takes ~6 seconds
+  - `uv sync --extra dev` -- takes ~8 seconds (installs both runtime and dev dependencies)
 
 ### Development Workflow
 - Run the Flask web application:
   - `cd dev-summit/src`
-  - `python app.py`
+  - `uv run python app.py`
   - Application runs on http://localhost:8080
   - NEVER CANCEL: Application starts immediately, no build step required
 - Generate static HTML files:
   - `cd dev-summit/src`
-  - `python generate_static.py` -- takes ~1 second
+  - `uv run python generate_static.py` -- takes ~1 second
   - Static files are generated in `docs/` directory
   - Static files can be served with: `cd docs && python3 -m http.server 8081`
 
 ### Code Quality and Testing
 - Run all linting and formatting checks (REQUIRED before committing):
   - `cd dev-summit`
-  - `black --config pyproject.toml --check src/` -- takes ~0.5 seconds
-  - `isort --settings-file=pyproject.toml --check-only src/` -- takes ~0.2 seconds  
-  - `pylint --rcfile=pyproject.toml src/` -- takes ~4 seconds
+  - `uv run black --config pyproject.toml --check src/` -- takes ~0.5 seconds
+  - `uv run isort --settings-file=pyproject.toml --check-only src/` -- takes ~0.2 seconds  
+  - `uv run pylint --rcfile=pyproject.toml src/` -- takes ~4 seconds
 - Run tests:
   - `cd dev-summit`
-  - `pytest src/` -- takes ~3 seconds, runs 11 tests
+  - `uv run pytest src/` -- takes ~3 seconds, runs 11 tests
 - Fix formatting automatically:
-  - `black --config pyproject.toml src/`
-  - `isort --settings-file=pyproject.toml src/`
+  - `uv run black --config pyproject.toml src/`
+  - `uv run isort --settings-file=pyproject.toml src/`
 
 ### Docker and Deployment
 - Docker build: 
@@ -53,12 +52,12 @@ Always reference these instructions first and fallback to search or bash command
 
 ### Manual Testing Requirements
 - ALWAYS test the Flask application after making changes by:
-  1. Start the Flask app: `cd dev-summit/src && python app.py`
+  1. Start the Flask app: `cd dev-summit/src && uv run python app.py`
   2. Navigate to http://localhost:8080 in browser
   3. Verify the first slide loads with "Bug-Free by Design" title
   4. Test navigation: click "Weiter »" to go to slide 2
   5. Test PDF export: visit http://localhost:8080/export/pdf
-  6. Verify static generation works: `cd dev-summit/src && python generate_static.py`
+  6. Verify static generation works: `cd dev-summit/src && uv run python generate_static.py`
 - ALWAYS run all linting and test commands before committing
 - Test both web interface and static HTML generation for any slide content changes
 
@@ -79,9 +78,8 @@ Always reference these instructions first and fallback to search or bash command
   - `slides/` - Markdown slide files (01_startfolie.md through 18_speaker.md)
   - `test_*.py` - Test files for application logic
 - `dev-summit/` - Python project configuration
-  - `requirements.txt` - Runtime dependencies (flask, markdown, weasyprint)
-  - `requirements-dev.txt` - Development dependencies (black, pylint, isort, pytest)
-  - `pyproject.toml` - Tool configuration for formatting and linting
+  - `pyproject.toml` - Project configuration with dependencies and tool settings
+  - `uv.lock` - Lockfile with exact dependency versions  
   - `Dockerfile` - Container configuration for deployment
 - `.github/workflows/` - CI/CD pipeline
   - `deploy.yaml` - Main deployment workflow with Docker build and Terraform apply
@@ -105,7 +103,7 @@ The deployment pipeline (`deploy.yaml`) runs on push to main and PR events:
 4. **Terraform Apply**: Deploy to Google Cloud Run with workspace-based environments
 
 ### Build Timeouts and Expectations
-- Python dependency installation: ~20 seconds total
+- Python dependency installation with UV: ~8 seconds total
 - Linting and formatting checks: ~5 seconds total  
 - Test execution: ~3 seconds
 - Docker build: ~2-5 minutes (when SSL certificates work)
@@ -123,19 +121,19 @@ The deployment pipeline (`deploy.yaml`) runs on push to main and PR events:
 ### Adding New Slides
 1. Create numbered Markdown file in `dev-summit/src/slides/` (e.g., `19_new-slide.md`)
 2. Add any images to `dev-summit/src/slides/images/`
-3. Test with Flask app: `cd dev-summit/src && python app.py`
-4. Regenerate static HTML: `python generate_static.py`
+3. Test with Flask app: `cd dev-summit/src && uv run python app.py`
+4. Regenerate static HTML: `uv run python generate_static.py`
 5. Run tests and linting before committing
 
 ### Debugging Issues
-- Check Flask app logs when running `python app.py`
+- Check Flask app logs when running `uv run python app.py`
 - Verify slide files are properly numbered and formatted
 - Test PDF export separately with WeasyPrint dependencies
 - Use browser developer tools to debug CSS and JavaScript issues
 - Static HTML generation issues usually involve path resolution
 
 ### Development Tips
-- Use `FLASK_DEBUG=true python app.py` for development mode with auto-reload
+- Use `FLASK_DEBUG=true uv run python app.py` for development mode with auto-reload
 - Test both dynamic Flask routes and static HTML output
 - PDF export requires proper system fonts and WeasyPrint dependencies
 - Arrow key navigation only works when no input fields are focused
