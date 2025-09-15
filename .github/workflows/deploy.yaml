@@ -177,4 +177,11 @@ jobs:
       - name: Terraform apply
         working-directory: terraform/deployment
         run: |
-          terraform apply -auto-approve
+          terraform apply -auto-approve -json | tee terraform_output.json
+
+      - name: Upload terraform output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-output-${{ github.head_ref || github.ref_name }}
+          path: terraform/deployment/terraform_output.json
