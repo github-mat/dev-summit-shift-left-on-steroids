@@ -1,6 +1,7 @@
 """Tests for QR code functionality"""
 
 import pytest
+
 from app import app
 
 
