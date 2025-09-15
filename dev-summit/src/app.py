@@ -2,14 +2,17 @@ import base64
 import mimetypes
 import os
 import re
+from io import BytesIO
 
 import markdown
+import qrcode
 from flask import (
     Flask,
     Response,
     abort,
     redirect,
     render_template_string,
+    request,
     send_from_directory,
     url_for,
 )
@@ -17,6 +20,14 @@ from weasyprint import HTML
 
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
+
+# Common QR code configuration
+QR_CODE_CONFIG = {
+    "version": 1,
+    "error_correction": qrcode.constants.ERROR_CORRECT_L,
+    "box_size": 10,
+    "border": 4,
+}
 
 IMAGE_REGEX = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
@@ -41,6 +52,28 @@ def slide_images(filename):
 def slide_videos(filename):
     # Liefert Videos aus slides/videos/ aus
     return send_from_directory(os.path.join(SLIDES_DIR, "videos"), filename)
+
+
+@app.route("/qr-code.png")
+def qr_code():
+    # Generate QR code that points to the PDF export URL
+    base_url = request.url_root.rstrip("/")
+    pdf_url = f"{base_url}/export/pdf"
+
+    # Create QR code
+    qr = qrcode.QRCode(**QR_CODE_CONFIG)
+    qr.add_data(pdf_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert to bytes
+    img_io = BytesIO()
+    img.save(img_io, "PNG")
+    img_io.seek(0)
+
+    return Response(img_io.getvalue(), mimetype="image/png")
 
 
 def get_slide_files():
@@ -196,12 +229,41 @@ def _prepare_slides(files: list[str], images_dir: str, summit_logo: str):
             data_url = _img_to_data_url(img_path)
             return f'src="{data_url}"'
 
+        # Replace regular images
         html_content = re.sub(IMAGE_REGEX, replace_img, html_content)
+
+        # Replace QR code URL with generated data URL for PDF
+        qr_data_url = _generate_qr_code_data_url()
+        html_content = html_content.replace(
+            'src="/qr-code.png"', f'src="{qr_data_url}"'
+        )
+
         slide_html = '<div class="slide">'
         slide_html += f'<img src="{summit_logo}" alt="Summit Logo" class="summit-logo">'
         slide_html += f"<h2>Folie {idx} / {len(files)}</h2>{html_content}</div>"
         slides_html.append(slide_html)
     return slides_html
+
+
+def _generate_qr_code_data_url():
+    """Generate QR code as data URL for PDF export"""
+    # For PDF export, use a generic URL since the PDF will be saved/shared
+    pdf_url = "https://your-presentation-url.com/export/pdf"
+
+    # Create QR code
+    qr = qrcode.QRCode(**QR_CODE_CONFIG)
+    qr.add_data(pdf_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert to data URL
+    img_io = BytesIO()
+    img.save(img_io, "PNG")
+    img_io.seek(0)
+    b64 = base64.b64encode(img_io.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{b64}"
 
 
 if __name__ == "__main__":

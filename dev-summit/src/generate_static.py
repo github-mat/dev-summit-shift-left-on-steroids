@@ -3,6 +3,7 @@ import re
 import shutil
 
 import markdown
+import qrcode
 
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
@@ -10,6 +11,14 @@ import markdown
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
 TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template.html")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../../", "docs")
+
+# Common QR code configuration
+QR_CODE_CONFIG = {
+    "version": 1,
+    "error_correction": qrcode.constants.ERROR_CORRECT_L,
+    "box_size": 10,
+    "border": 4,
+}
 
 
 PREV_NAV_TEMPLATE = """
@@ -36,6 +45,7 @@ def render_static_html():
         os.makedirs(OUTPUT_DIR)
 
     copy_media()
+    generate_qr_code_image()
     content_template = get_template_content()
 
     files = get_slide_files()
@@ -66,6 +76,25 @@ def copy_media():
             shutil.copytree(src, dst)
 
 
+def generate_qr_code_image():
+    """Generate QR code image for static HTML"""
+    # For static HTML, create a placeholder QR code
+    # In real deployment, this would point to the actual deployed URL
+    qr_url = "https://your-deployed-site.com/export/pdf"
+
+    # Create QR code
+    qr = qrcode.QRCode(**QR_CODE_CONFIG)
+    qr.add_data(qr_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Save QR code as PNG file
+    qr_path = os.path.join(OUTPUT_DIR, "qr-code.png")
+    img.save(qr_path)
+
+
 def get_template_content() -> str:
     with open(TEMPLATE_PATH, encoding="utf-8") as tpl:
         template_content = tpl.read()
@@ -90,6 +119,8 @@ def get_html_content(filename: str) -> str:
 
     html_content = html_content.replace("/slide/images/", "images/")
     html_content = html_content.replace("/slide/videos/", "videos/")
+    # Replace QR code URL for static HTML
+    html_content = html_content.replace('src="/qr-code.png"', 'src="qr-code.png"')
     return html_content
 
 
