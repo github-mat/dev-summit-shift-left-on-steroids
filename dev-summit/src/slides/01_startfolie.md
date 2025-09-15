@@ -3,25 +3,17 @@
 <!-- <video src="videos/startfolie.mp4" controls autoplay muted loop width="80%"></video> -->
 <!-- ![Deckblatt](images/titelfolie.png){ width=80% height=auto .center} -->
 
-<table style="height: 420px; vertical-align: middle; width: 100%; border-collapse: collapse;">
-    <tr>
-        <td style="vertical-align: top; width: 40%; height: 420px; padding: 20px;">
-            <img src="images/titelfolie.png" alt="Titelfolie" style="max-width: 100%; height: auto; display: block;" />
-        </td>
-        <td style="vertical-align: top; width: 60%; height: 420px; position: relative; padding: 20px;">
-            <div style="position: absolute; top: 50%; left: 20px; right: 20px; transform: translateY(-50%); text-align: left;">
-                <h1 style="font-size: 3em; font-weight: bold; margin: 0 0 0.3em 0; color: #C30A17; line-height: 1.1;">
-                    Bug-Free by Design
-                </h1>
-                <h2 style="font-size: 1.5em; font-weight: normal; margin: 0; color: #333; line-height: 1.2;">
-                    Shift-Left on Steroids
-                </h2>
-            </div>
-            <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; text-align: left;">
-                <p style="font-size: 1.1em; margin: 0; color: #666; font-weight: 500;">
-                    Maximilian Sparenberg | Constantin Ponfick
-                </p>
-            </div>
-        </td>
-    </tr>
-</table>
+<div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: center; min-height: 400px;">
+    <img src="images/titelfolie.png" alt="Titelfolie" style="width: 100%; height: auto;" />
+    <div>
+        <h1 style="font-size: clamp(2rem, 5vw, 4rem); font-weight: bold; margin: 0 0 0.5rem 0; color: #C30A17; line-height: 1.1;">
+            Bug-Free by Design
+        </h1>
+        <h2 style="font-size: clamp(1.2rem, 3vw, 2rem); font-weight: normal; margin: 0 0 2rem 0; color: #333; line-height: 1.2;">
+            Shift-Left on Steroids
+        </h2>
+        <p style="font-size: clamp(1rem, 2vw, 1.3rem); margin: 0; color: #666; font-weight: 500;">
+            Maximilian Sparenberg | Constantin Ponfick
+        </p>
+    </div>
+</div>
