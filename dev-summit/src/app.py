@@ -45,7 +45,6 @@ def slide_videos(filename):
 
 
 def get_slide_files():
-
     files = [f for f in os.listdir(SLIDES_DIR) if f.endswith(".md")]
 
     def extract_number(filename):
@@ -60,33 +59,35 @@ def extract_slide_title(filename):
     """Extract the title from the slide filename"""
     # Remove the .md extension and extract the part after the number
     name_without_ext = os.path.splitext(filename)[0]
-    
+
     # Remove the leading number and underscore (e.g., "01_" from "01_startfolie.md")
     match = re.match(r"(\d+)_(.+)", name_without_ext)
     if match:
         title_part = match.group(2)
         # Replace hyphens and underscores with spaces and title case
-        title = title_part.replace('-', ' ').replace('_', ' ')
+        title = title_part.replace("-", " ").replace("_", " ")
         # Convert to title case
         return title.title()
-    
+
     # Fallback: just use the filename without extension
-    return name_without_ext.replace('-', ' ').replace('_', ' ').title()
+    return name_without_ext.replace("-", " ").replace("_", " ").title()
 
 
 def get_slide_metadata():
     """Get metadata for all slides including titles for thumbnail navigation"""
     files = get_slide_files()
     metadata = []
-    
+
     for idx, filename in enumerate(files, 1):
         title = extract_slide_title(filename)
-        metadata.append({
-            'number': idx,
-            'filename': filename,
-            'title': title
-        })
-    
+        metadata.append(
+            {
+                "number": idx,
+                "filename": filename,
+                "title": title,
+            }
+        )
+
     return metadata
 
 
@@ -117,10 +118,10 @@ def show_slide(slide_num):
     html_content = markdown.markdown(md_content, extensions=["extra"])
     prev_slide = slide_num - 1 if slide_num > 1 else None
     next_slide = slide_num + 1 if slide_num < total else None
-    
+
     # Get metadata for all slides for thumbnail navigation
     slide_metadata = get_slide_metadata()
-    
+
     # Template-Pfad relativ zu src
     template_path = os.path.join(os.path.dirname(__file__), "template.html")
     with open(template_path, encoding="utf-8") as tpl:
