@@ -5,20 +5,14 @@ import shutil
 import markdown
 import qrcode
 
+from config import QR_CODE_CONFIG
+
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
 
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
 TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template.html")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../../", "docs")
-
-# Common QR code configuration
-QR_CODE_CONFIG = {
-    "version": 1,
-    "error_correction": qrcode.constants.ERROR_CORRECT_L,
-    "box_size": 10,
-    "border": 4,
-}
 
 
 PREV_NAV_TEMPLATE = """

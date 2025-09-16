@@ -18,16 +18,10 @@ from flask import (
 )
 from weasyprint import HTML
 
+from config import QR_CODE_CONFIG
+
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
-
-# Common QR code configuration
-QR_CODE_CONFIG = {
-    "version": 1,
-    "error_correction": qrcode.constants.ERROR_CORRECT_L,
-    "box_size": 10,
-    "border": 4,
-}
 
 IMAGE_REGEX = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
