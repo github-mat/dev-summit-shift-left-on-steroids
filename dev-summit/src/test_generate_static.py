@@ -5,9 +5,9 @@ from generate_static import (
     NEXT_NAV_TEMPLATE,
     PREV_NAV_TEMPLATE,
     get_html_content,
-    get_slide_files,
     prepare_page,
 )
+from utils import get_slide_files
 
 
 def test_get_slide_files_sorting():
@@ -24,7 +24,7 @@ def test_get_slide_files_sorting():
         original_dir = gen_module.SLIDES_DIR
         gen_module.SLIDES_DIR = temp_dir
 
-        files = get_slide_files()
+        files = get_slide_files(temp_dir)
         assert files == ["1_slide.md", "2_slide.md", "10_slide.md"]
 
         gen_module.SLIDES_DIR = original_dir

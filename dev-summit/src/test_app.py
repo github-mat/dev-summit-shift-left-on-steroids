@@ -3,7 +3,8 @@ import tempfile
 
 import pytest
 
-from app import app, get_slide_files
+from app import app
+from utils import get_slide_files
 
 
 @pytest.fixture
@@ -49,7 +50,7 @@ def test_get_slide_files_empty():
         original_dir = app_module.SLIDES_DIR
         app_module.SLIDES_DIR = temp_dir
 
-        files = get_slide_files()
+        files = get_slide_files(temp_dir)
         assert files == []
 
         app_module.SLIDES_DIR = original_dir
@@ -57,7 +58,7 @@ def test_get_slide_files_empty():
 
 def test_get_slide_files_with_content(temp_slides):
     """Test get_slide_files with actual slide files."""
-    files = get_slide_files()
+    files = get_slide_files(temp_slides)
     assert len(files) == 2
     assert files == ["01_first.md", "02_second.md"]
 

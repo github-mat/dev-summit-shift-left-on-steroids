@@ -1,9 +1,9 @@
 import os
-import re
 import shutil
 
 import markdown
-import qrcode
+
+from utils import generate_qr_code, get_slide_files
 
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
@@ -40,7 +40,7 @@ def render_static_html():
     generate_static_qr_code()
     content_template = get_template_content()
 
-    files = get_slide_files()
+    files = get_slide_files(SLIDES_DIR)
     total = len(files)
     for idx, filename in enumerate(files, 1):
 
@@ -78,18 +78,8 @@ def generate_static_qr_code():
     )
     pdf_url = f"{base_url}/export/pdf"
 
-    # Generate QR code
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(pdf_url)
-    qr.make(fit=True)
-
-    # Create QR code image
-    img = qr.make_image(fill_color="black", back_color="white")
+    # Generate QR code using shared utility
+    img = generate_qr_code(pdf_url)
 
     # Save as static image
     qr_path = os.path.join(OUTPUT_DIR, "images", "qr-code-pdf-download.png")
@@ -101,17 +91,6 @@ def get_template_content() -> str:
     with open(TEMPLATE_PATH, encoding="utf-8") as tpl:
         template_content = tpl.read()
     return template_content
-
-
-def get_slide_files():
-    files = [f for f in os.listdir(SLIDES_DIR) if f.endswith(".md")]
-
-    def extract_number(filename):
-        match = re.match(r"(\d+)", os.path.splitext(filename)[0])
-        return int(match.group(1)) if match else 0
-
-    files = sorted(files, key=extract_number)
-    return files
 
 
 def get_html_content(filename: str) -> str:

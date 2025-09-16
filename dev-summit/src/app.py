@@ -6,7 +6,6 @@ import re
 import time
 
 import markdown
-import qrcode
 from flask import (
     Flask,
     Response,
@@ -18,6 +17,8 @@ from flask import (
     url_for,
 )
 from weasyprint import HTML
+
+from utils import generate_qr_code, get_slide_files
 
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
@@ -58,18 +59,8 @@ def qr_code_pdf_download():
     base_url = request.url_root.rstrip("/")
     pdf_url = f"{base_url}/export/pdf"
 
-    # Generate QR code
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(pdf_url)
-    qr.make(fit=True)
-
-    # Create QR code image
-    img = qr.make_image(fill_color="black", back_color="white")
+    # Generate QR code using shared utility
+    img = generate_qr_code(pdf_url)
 
     # Convert to bytes
     img_io = io.BytesIO()
@@ -83,21 +74,9 @@ def qr_code_pdf_download():
     )
 
 
-def get_slide_files():
-
-    files = [f for f in os.listdir(SLIDES_DIR) if f.endswith(".md")]
-
-    def extract_number(filename):
-        match = re.match(r"(\d+)", os.path.splitext(filename)[0])
-        return int(match.group(1)) if match else 0
-
-    files = sorted(files, key=extract_number)
-    return files
-
-
 @app.route("/")
 def index():
-    files = get_slide_files()
+    files = get_slide_files(SLIDES_DIR)
     if not files:
         return NO_SLIDES_FOUND_HTML
     return redirect(url_for("show_slide", slide_num=1))
@@ -105,7 +84,7 @@ def index():
 
 @app.route("/slide/<int:slide_num>")
 def show_slide(slide_num):
-    files = get_slide_files()
+    files = get_slide_files(SLIDES_DIR)
     total = len(files)
     if slide_num < 1 or slide_num > total:
         abort(404)
@@ -145,7 +124,7 @@ def export_pdf():
             )
 
     # Generate PDF if not cached or expired
-    files = get_slide_files()
+    files = get_slide_files(SLIDES_DIR)
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
 
