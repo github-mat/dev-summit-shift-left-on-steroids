@@ -24,15 +24,15 @@ Always reference these instructions first and fallback to search or bash command
   - Static files are generated in `docs/` directory
   - Static files can be served with: `cd docs && python3 -m http.server 8081`
 
-### Code Quality and Testing
-- Run all linting and formatting checks (REQUIRED before committing):
+### Code Quality and Testing (REQUIRED before committing)
+- Run all linting and formatting checks:
   - `cd dev-summit`
-  - `black --config pyproject.toml --check src/` -- takes ~0.5 seconds
-  - `isort --settings-file=pyproject.toml --check-only src/` -- takes ~0.2 seconds  
-  - `pylint --rcfile=pyproject.toml src/` -- takes ~4 seconds
+  - `black --config pyproject.toml --check src/`
+  - `isort --settings-file=pyproject.toml --check-only src/`
+  - `pylint --rcfile=pyproject.toml src/`
 - Run tests:
   - `cd dev-summit`
-  - `pytest src/` -- takes ~3 seconds, runs 11 tests
+  - `pytest src/`
 - Fix formatting automatically:
   - `black --config pyproject.toml src/`
   - `isort --settings-file=pyproject.toml src/`
