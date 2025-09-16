@@ -158,6 +158,13 @@
 </tr>
 </tbody>
 </table>
+        
+<div style="margin-top: 2em; text-align: center;">
+            <h3>Folien herunterladen</h3>
+            <p>Scannen Sie den QR-Code, um die komplette Präsentation als PDF herunterzuladen:</p>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAAB/ElEQVR4nO2ZQYqkQBBFX7SCS71BHyW9ct9Aj1IHGDCXBSl/FpnaVjUM2oNVLiIWguZbfAgyIvxhYmeMH3tJcNRRRx111NEzUStRA7HG+vxYPvenC3D0CBokSRNYD2hgNg1UkiQ9oucIcPQIGssV0tAmrG8l64Fy314gwNEdUT+9G1SJ0aok4isEOPofqIY2ISlh/VsEOPqPWO5WKyCC0c41YZjzwfbf+e1aHS3oaGZmHRBujSA2AuY8Er5CgKN74vkKaewwEWcr9+1sAY4eQNnM6GECaFM5GNq0tjFJw9u1OlqyFVQyQ5gq5Uc59WxdD83mRbPWvlwJxWg11r9AgKMH0Fz17gbt3TS0kgZmIyi9RoCjO2KZMmIHxBpGq2TroYWv7lwBjv6ib02Vco8qs4W03DfJ+9ZV0IcpA5YpQymPiNJE8Xw9W9dBYyOCJMbPhIZYA1SyvnUP/jro6urOBlRJxDrlvjV2GLmhnSjA0cOV8DuWbpVy/SuLL6+EV0I3u+Nwa1T+vHI5nH13fDV03R0vhgZsPajzBTi6K5YJnnUclEp6clReCa+Ljl0xnTRQiTB5JbwO+rzpJ3w1MjBE+8cEws4U4OgvsrXsjhk/7yaYawu3x1S+Xauj2/0WLDYG2W9aDF33Mi6C/tgdQ7VN3ukCHHXUUUcddfQA+hdwA0Kq3MLhDgAAAABJRU5ErkJggg==" alt="QR Code zum Download der Präsentation" style="max-width: 200px; height: auto;">
+        </div>
+        
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -167,13 +174,13 @@
                 <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">&laquo; Zurück</a>
                 {% else %}
                 <a class="disabled">&laquo; Zurück</a>
-                {% endif %}
+                
                 <span>Folie 18 / 18</span>
                 {% if next_slide %}
                 <a href="{{ url_for('show_slide', slide_num=next_slide) }}">Weiter &raquo;</a>
                 {% else %}
                 <a class="disabled">Weiter &raquo;</a>
-                {% endif %}
+                
             </div>
         </div>
     </div>

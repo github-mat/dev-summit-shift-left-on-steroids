@@ -4,6 +4,9 @@ import shutil
 
 import markdown
 
+# Import QR code generation from app.py
+from app import generate_qr_code_data_url
+
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
 
@@ -102,10 +105,36 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
     prev_slide = idx - 1 if idx > 1 else None
     next_slide = idx + 1 if idx < total else None
 
-    page = content_template
-    page = page.replace("{{ content|safe }}", html_content)
-    page = page.replace("{{ slide_num }}", str(idx))
-    page = page.replace("{{ total_slides }}", str(total))
+    # Handle QR code for last slide if template contains QR code section
+    if (
+        idx == total and "{% if qr_code_data_url %}" in page
+    ):  # Last slide with QR template
+        # For static HTML, use relative path to PDF (assumption: PDF will be available)
+        pdf_url = "devsummit_praesentation.pdf"  # Static PDF file name
+        qr_code_data_url = generate_qr_code_data_url(pdf_url)
+        qr_section = f"""
+        <div style="margin-top: 2em; text-align: center;">
+            <h3>Folien herunterladen</h3>
+            <p>Scannen Sie den QR-Code, um die komplette Präsentation als PDF herunterzuladen:</p>
+            <img src="{qr_code_data_url}" alt="QR Code zum Download der Präsentation" style="max-width: 200px; height: auto;">
+        </div>
+        """
+        # Insert QR code section
+        page = (
+            page.replace("{% if qr_code_data_url %}", "")
+            .replace("{% endif %}", "")
+            .replace(
+                """        <div style="margin-top: 2em; text-align: center;">
+            <h3>Folien herunterladen</h3>
+            <p>Scannen Sie den QR-Code, um die komplette Präsentation als PDF herunterzuladen:</p>
+            <img src="{{ qr_code_data_url }}" alt="QR Code zum Download der Präsentation" style="max-width: 200px; height: auto;">
+        </div>""",
+                qr_section.strip(),
+            )
+        )
+    elif "{% if qr_code_data_url %}" in page:
+        # Remove QR code section for other slides
+        page = page.replace("{% if qr_code_data_url %}", "{% if False %}")
 
     # Navigation-Links (nur statisch, keine Flask-URL)
     if prev_slide:

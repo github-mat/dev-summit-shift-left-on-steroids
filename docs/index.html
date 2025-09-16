@@ -157,6 +157,13 @@
         </p>
     </div>
 </div>
+        {% if False %}
+        <div style="margin-top: 2em; text-align: center;">
+            <h3>Folien herunterladen</h3>
+            <p>Scannen Sie den QR-Code, um die komplette Präsentation als PDF herunterzuladen:</p>
+            <img src="{{ qr_code_data_url }}" alt="QR Code zum Download der Präsentation" style="max-width: 200px; height: auto;">
+        </div>
+        {% endif %}
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
