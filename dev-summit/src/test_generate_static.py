@@ -98,3 +98,29 @@ def test_prepare_page_last_slide():
     assert "Slide 3 of 3" in result
     assert "slide2.html" in result  # Previous should link to slide2
     assert "disabled" in result  # Next should be disabled
+
+
+def test_static_qr_code_replacement():
+    """Test that QR code URLs are replaced in static generation."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a temporary markdown file with QR code reference
+        test_md = '# Test\n<img src="/qr-code/pdf-download" alt="QR Code">'
+        test_file = os.path.join(temp_dir, "test.md")
+
+        with open(test_file, "w", encoding="utf-8") as f:
+            f.write(test_md)
+
+        import generate_static as gen_module
+
+        original_dir = gen_module.SLIDES_DIR
+
+        try:
+            gen_module.SLIDES_DIR = temp_dir
+            html_content = get_html_content("test.md")
+
+            # Check that the QR code URL was replaced
+            assert "/qr-code/pdf-download" not in html_content
+            assert "images/qr-code-pdf-download.png" in html_content
+
+        finally:
+            gen_module.SLIDES_DIR = original_dir

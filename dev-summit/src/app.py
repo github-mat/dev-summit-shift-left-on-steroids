@@ -1,15 +1,19 @@
 import base64
+import io
 import mimetypes
 import os
 import re
+import time
 
 import markdown
+import qrcode
 from flask import (
     Flask,
     Response,
     abort,
     redirect,
     render_template_string,
+    request,
     send_from_directory,
     url_for,
 )
@@ -17,6 +21,10 @@ from weasyprint import HTML
 
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
+
+# Simple in-memory cache for PDF export
+PDF_CACHE = {}
+PDF_CACHE_TIMEOUT = 300  # 5 minutes
 
 IMAGE_REGEX = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
@@ -41,6 +49,38 @@ def slide_images(filename):
 def slide_videos(filename):
     # Liefert Videos aus slides/videos/ aus
     return send_from_directory(os.path.join(SLIDES_DIR, "videos"), filename)
+
+
+@app.route("/qr-code/pdf-download")
+def qr_code_pdf_download():
+    """Generate QR code for PDF download with environment-aware URL."""
+    # Get the base URL dynamically based on the request
+    base_url = request.url_root.rstrip("/")
+    pdf_url = f"{base_url}/export/pdf"
+
+    # Generate QR code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(pdf_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert to bytes
+    img_io = io.BytesIO()
+    img.save(img_io, "PNG")
+    img_io.seek(0)
+
+    return Response(
+        img_io.getvalue(),
+        mimetype="image/png",
+        headers={"Cache-Control": "max-age=3600"},  # Cache for 1 hour
+    )
 
 
 def get_slide_files():
@@ -91,6 +131,20 @@ def show_slide(slide_num):
 
 @app.route("/export/pdf")
 def export_pdf():
+    # Check cache first
+    cache_key = "pdf_export"
+    current_time = time.time()
+
+    if cache_key in PDF_CACHE:
+        cached_data, timestamp = PDF_CACHE[cache_key]
+        if current_time - timestamp < PDF_CACHE_TIMEOUT:
+            return Response(
+                cached_data,
+                mimetype="application/pdf",
+                headers=HEADERS,
+            )
+
+    # Generate PDF if not cached or expired
     files = get_slide_files()
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
@@ -167,6 +221,10 @@ def export_pdf():
 </body>
 </html>"""
     pdf = HTML(string=pdf_html).write_pdf()
+
+    # Cache the PDF
+    PDF_CACHE[cache_key] = (pdf, current_time)
+
     return Response(
         pdf,
         mimetype="application/pdf",

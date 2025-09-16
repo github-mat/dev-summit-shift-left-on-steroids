@@ -3,6 +3,7 @@ import re
 import shutil
 
 import markdown
+import qrcode
 
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
@@ -36,6 +37,7 @@ def render_static_html():
         os.makedirs(OUTPUT_DIR)
 
     copy_media()
+    generate_static_qr_code()
     content_template = get_template_content()
 
     files = get_slide_files()
@@ -66,6 +68,35 @@ def copy_media():
             shutil.copytree(src, dst)
 
 
+def generate_static_qr_code():
+    """Generate a static QR code image for production deployment."""
+    # For static deployment, we'll assume the production URL pattern
+    # This could be configured via environment variable in production
+    base_url = os.environ.get(
+        "STATIC_BASE_URL",
+        "https://github-mat.github.io/dev-summit-shift-left-on-steroids",
+    )
+    pdf_url = f"{base_url}/export/pdf"
+
+    # Generate QR code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(pdf_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Save as static image
+    qr_path = os.path.join(OUTPUT_DIR, "images", "qr-code-pdf-download.png")
+    os.makedirs(os.path.dirname(qr_path), exist_ok=True)
+    img.save(qr_path)
+
+
 def get_template_content() -> str:
     with open(TEMPLATE_PATH, encoding="utf-8") as tpl:
         template_content = tpl.read()
@@ -90,6 +121,10 @@ def get_html_content(filename: str) -> str:
 
     html_content = html_content.replace("/slide/images/", "images/")
     html_content = html_content.replace("/slide/videos/", "videos/")
+    # Replace QR code endpoint with static image for static deployment
+    html_content = html_content.replace(
+        "/qr-code/pdf-download", "images/qr-code-pdf-download.png"
+    )
     return html_content
 
 

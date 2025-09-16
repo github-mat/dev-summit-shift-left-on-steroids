@@ -106,3 +106,59 @@ def test_pdf_export(client, temp_slides):
     response = client.get("/export/pdf")
     assert response.status_code == 200
     assert response.content_type == "application/pdf"
+
+
+def test_qr_code_pdf_download(client):
+    """Test QR code generation for PDF download."""
+    response = client.get("/qr-code/pdf-download")
+    assert response.status_code == 200
+    assert response.content_type == "image/png"
+    assert "Cache-Control" in response.headers
+    assert "max-age=3600" in response.headers["Cache-Control"]
+
+
+def test_pdf_export_caching(client, temp_slides):
+    """Test that PDF export is cached properly."""
+    # First request should generate PDF
+    response1 = client.get("/export/pdf")
+    assert response1.status_code == 200
+
+    # Second request should use cached version
+    response2 = client.get("/export/pdf")
+    assert response2.status_code == 200
+    assert response2.content_type == "application/pdf"
+
+    # Content should be identical (cached)
+    assert response1.data == response2.data
+
+
+def test_final_slide_contains_qr_code(client):
+    """Test that the final slide contains QR code reference."""
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a test speaker slide with QR code
+        test_slide = """# Speaker
+
+| Name 1 | Name 2 |
+|--------|--------|
+| Test 1 | Test 2 |
+
+<div style="text-align: center; margin-top: 2em;">
+    <h3>Scan to download slides</h3>
+    <img src="/qr-code/pdf-download" alt="QR Code for slide download">
+</div>"""
+
+        with open(os.path.join(temp_dir, "01_speaker.md"), "w", encoding="utf-8") as f:
+            f.write(test_slide)
+
+        import app as app_module
+
+        original_dir = app_module.SLIDES_DIR
+        app_module.SLIDES_DIR = temp_dir
+
+        response = client.get("/slide/1")
+        assert response.status_code == 200
+        content = response.get_data(as_text=True)
+        assert "/qr-code/pdf-download" in content
+        assert "Scan to download slides" in content
+
+        app_module.SLIDES_DIR = original_dir
