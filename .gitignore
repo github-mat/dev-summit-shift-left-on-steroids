@@ -44,3 +44,7 @@ crash.log
 .tmp
 .mypy_cache/
 __pycache__
+
+# PDF cache files
+.pdf_cache.pdf
+.pdf_cache_meta.txt

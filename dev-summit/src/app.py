@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import mimetypes
 import os
 import re
@@ -22,6 +23,10 @@ from config import QR_CODE_CONFIG
 
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
+
+# PDF Cache configuration
+PDF_CACHE_FILE = os.path.join(os.path.dirname(__file__), ".pdf_cache.pdf")
+PDF_CACHE_META_FILE = os.path.join(os.path.dirname(__file__), ".pdf_cache_meta.txt")
 
 IMAGE_REGEX = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
@@ -82,6 +87,74 @@ def get_slide_files():
     return files
 
 
+def _get_content_hash():
+    """Generate a hash of all content that affects PDF generation"""
+    hasher = hashlib.md5()
+
+    # Hash all slide files
+    files = get_slide_files()
+    for filename in files:
+        file_path = os.path.join(SLIDES_DIR, filename)
+        if os.path.exists(file_path):
+            hasher.update(filename.encode("utf-8"))
+            hasher.update(str(os.path.getmtime(file_path)).encode("utf-8"))
+
+    # Hash template file
+    template_path = os.path.join(os.path.dirname(__file__), "template.html")
+    if os.path.exists(template_path):
+        hasher.update(str(os.path.getmtime(template_path)).encode("utf-8"))
+
+    # Hash all images
+    images_dir = os.path.join(SLIDES_DIR, "images")
+    if os.path.exists(images_dir):
+        for root, _, files in os.walk(images_dir):
+            for file in sorted(files):  # Sort for consistent hashing
+                file_path = os.path.join(root, file)
+                hasher.update(file.encode("utf-8"))
+                hasher.update(str(os.path.getmtime(file_path)).encode("utf-8"))
+
+    return hasher.hexdigest()
+
+
+def _is_pdf_cache_valid():
+    """Check if PDF cache is still valid"""
+    if not os.path.exists(PDF_CACHE_FILE) or not os.path.exists(PDF_CACHE_META_FILE):
+        return False
+
+    try:
+        with open(PDF_CACHE_META_FILE, "r", encoding="utf-8") as f:
+            cached_hash = f.read().strip()
+
+        current_hash = _get_content_hash()
+        return cached_hash == current_hash
+    except (OSError, IOError):
+        return False
+
+
+def _save_pdf_cache(pdf_data):
+    """Save PDF to cache with metadata"""
+    try:
+        # Save PDF content
+        with open(PDF_CACHE_FILE, "wb") as f:
+            f.write(pdf_data)
+
+        # Save content hash
+        with open(PDF_CACHE_META_FILE, "w", encoding="utf-8") as f:
+            f.write(_get_content_hash())
+    except (OSError, IOError):
+        # If caching fails, continue without cache
+        pass
+
+
+def _load_pdf_cache():
+    """Load PDF from cache"""
+    try:
+        with open(PDF_CACHE_FILE, "rb") as f:
+            return f.read()
+    except (OSError, IOError):
+        return None
+
+
 @app.route("/")
 def index():
     files = get_slide_files()
@@ -118,6 +191,17 @@ def show_slide(slide_num):
 
 @app.route("/export/pdf")
 def export_pdf():
+    # Check if we have a valid cached PDF
+    if _is_pdf_cache_valid():
+        cached_pdf = _load_pdf_cache()
+        if cached_pdf:
+            return Response(
+                cached_pdf,
+                mimetype="application/pdf",
+                headers=HEADERS,
+            )
+
+    # Generate new PDF if cache is invalid or missing
     files = get_slide_files()
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
@@ -194,6 +278,10 @@ def export_pdf():
 </body>
 </html>"""
     pdf = HTML(string=pdf_html).write_pdf()
+
+    # Cache the generated PDF
+    _save_pdf_cache(pdf)
+
     return Response(
         pdf,
         mimetype="application/pdf",
