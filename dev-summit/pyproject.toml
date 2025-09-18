@@ -1,3 +1,26 @@
+[project]
+name = "dev-summit-shift-left-on-steroids"
+version = "0.1.0"
+description = "Dev Summit presentation generator for Shift Left on Steroids session"
+authors = [
+    { name = "GitHub Materna", email = "noreply@github.com" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "flask",
+    "markdown",
+    "weasyprint",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "pylint", 
+    "isort",
+    "pytest",
+]
+
 [tool.black]
 line-length = 88
 target-version = ['py311']
