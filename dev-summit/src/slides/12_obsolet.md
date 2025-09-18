@@ -1,4 +1,4 @@
 <!-- # Obsolet -->
 
-![KI](images/obsolet2.jpg){ width=80% height=auto .center}
+![KI](images/obsolet2.jpg){ width=100% height=auto .center}
 

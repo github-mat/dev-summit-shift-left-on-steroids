@@ -1,7 +1,7 @@
 <!-- # Bug-Free-by-Design: Shift-Left on Steroids -->
 
 <!-- <video src="videos/startfolie.mp4" controls autoplay muted loop width="80%"></video> -->
-<!-- ![Deckblatt](images/titelfolie.png){ width=80% height=auto .center} -->
+<!-- ![Deckblatt](images/titelfolie.png){ width=100% height=auto .center} -->
 
 <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: center; min-height: 400px;">
     <img src="images/titelfolie.png" alt="Titelfolie" style="width: 100%; height: auto;" />
