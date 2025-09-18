@@ -2,8 +2,6 @@ import os
 import tempfile
 
 from generate_static import (
-    NEXT_NAV_TEMPLATE,
-    PREV_NAV_TEMPLATE,
     get_html_content,
     get_slide_files,
     prepare_page,
@@ -54,14 +52,22 @@ def test_get_html_content():
 
 def test_prepare_page_first_slide():
     """Test page preparation for first slide."""
-    template = f"""
+    template = """
     <html>
     <body>
-        <div>{{{{ content|safe }}}}</div>
-        <p>Slide {{{{ slide_num }}}} of {{{{ total_slides }}}}</p>
+        <div>{{ content|safe }}</div>
+        <p>Slide {{ slide_num }} of {{ total_slides }}</p>
         <nav>
-            {PREV_NAV_TEMPLATE}
-            {NEXT_NAV_TEMPLATE}
+            {% if prev_slide %}
+            <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">&laquo; Zurück</a>
+            {% else %}
+            <a class="disabled">&laquo; Zurück</a>
+            {% endif %}
+            {% if next_slide %}
+            <a href="{{ url_for('show_slide', slide_num=next_slide) }}">Weiter &raquo;</a>
+            {% else %}
+            <a class="disabled">Weiter &raquo;</a>
+            {% endif %}
         </nav>
     </body>
     </html>
@@ -78,14 +84,22 @@ def test_prepare_page_first_slide():
 
 def test_prepare_page_last_slide():
     """Test page preparation for last slide."""
-    template = f"""
+    template = """
     <html>
     <body>
-        <div>{{{{ content|safe }}}}</div>
-        <p>Slide {{{{ slide_num }}}} of {{{{ total_slides }}}}</p>
+        <div>{{ content|safe }}</div>
+        <p>Slide {{ slide_num }} of {{ total_slides }}</p>
         <nav>
-            {PREV_NAV_TEMPLATE}
-            {NEXT_NAV_TEMPLATE}
+            {% if prev_slide %}
+            <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">&laquo; Zurück</a>
+            {% else %}
+            <a class="disabled">&laquo; Zurück</a>
+            {% endif %}
+            {% if next_slide %}
+            <a href="{{ url_for('show_slide', slide_num=next_slide) }}">Weiter &raquo;</a>
+            {% else %}
+            <a class="disabled">Weiter &raquo;</a>
+            {% endif %}
         </nav>
     </body>
     </html>

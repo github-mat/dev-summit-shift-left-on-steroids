@@ -13,6 +13,7 @@ Always reference these instructions first and fallback to search or bash command
   - `pip install -r requirements-dev.txt` -- takes ~6 seconds
 
 ### Development Workflow
+- Activate python .venv in dev-summit or create it.
 - Run the Flask web application:
   - `cd dev-summit/src`
   - `python app.py`
