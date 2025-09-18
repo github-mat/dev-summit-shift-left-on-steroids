@@ -1,4 +1,4 @@
 # CI/CD
 
-![KI](images/ausgangslage.png){ width=100% }
+![KI](images/ausgangslage.png){ width=80% height=auto .center}
 
