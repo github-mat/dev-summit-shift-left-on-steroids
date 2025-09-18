@@ -9,14 +9,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install UV
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy project configuration and lock file
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies using UV
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY src/ ./
 
 # Start the Python application
-CMD ["python", "app.py"]
+CMD ["uv", "run", "python", "app.py"]
