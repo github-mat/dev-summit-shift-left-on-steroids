@@ -141,6 +141,12 @@
         <!-- # Ausgangslage -->
 
 <p><img alt="KI" class="center" height="auto" src="images/ausgangslage2.png" width="80%" /></p>
+        {% if qr_code_data %}
+        <div style="margin-top: 2em; text-align: center;">
+            <p style="font-size: 1.2em; margin-bottom: 1em; color: #333;">Scan to download slides</p>
+            <img src="{{ qr_code_data }}" alt="QR Code for PDF Download" style="width: 150px; height: 150px; border: 2px solid #333; border-radius: 10px;">
+        </div>
+        {% endif %}
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>

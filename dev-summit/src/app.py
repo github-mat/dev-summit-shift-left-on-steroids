@@ -1,15 +1,18 @@
 import base64
+import io
 import mimetypes
 import os
 import re
 
 import markdown
+import qrcode
 from flask import (
     Flask,
     Response,
     abort,
     redirect,
     render_template_string,
+    request,
     send_from_directory,
     url_for,
 )
@@ -17,6 +20,9 @@ from weasyprint import HTML
 
 app = Flask(__name__)
 SLIDES_DIR = os.path.join(os.path.dirname(__file__), "slides")
+
+# Cache for PDF export
+CACHED_PDF = None
 
 IMAGE_REGEX = r'src=["\"](\/slide\/images\/|\.\/images\/|images\/)([^"\"]+)["\"]'
 
@@ -55,6 +61,34 @@ def get_slide_files():
     return files
 
 
+def generate_qr_code():
+    """Generate QR code for PDF download based on current request environment."""
+    # Get the base URL from the current request
+    base_url = request.url_root.rstrip("/")
+    pdf_url = f"{base_url}/export/pdf"
+
+    # Generate QR code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(pdf_url)
+    qr.make(fit=True)
+
+    # Create QR code image
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert to base64 data URL
+    img_buffer = io.BytesIO()
+    img.save(img_buffer, format="PNG")
+    img_buffer.seek(0)
+    img_b64 = base64.b64encode(img_buffer.getvalue()).decode("utf-8")
+
+    return f"data:image/png;base64,{img_b64}"
+
+
 @app.route("/")
 def index():
     files = get_slide_files()
@@ -75,6 +109,10 @@ def show_slide(slide_num):
     html_content = markdown.markdown(md_content, extensions=["extra"])
     prev_slide = slide_num - 1 if slide_num > 1 else None
     next_slide = slide_num + 1 if slide_num < total else None
+
+    # Generate QR code only for the final slide (slide 18)
+    qr_code_data = generate_qr_code() if slide_num == total else None
+
     # Template-Pfad relativ zu src
     template_path = os.path.join(os.path.dirname(__file__), "template.html")
     with open(template_path, encoding="utf-8") as tpl:
@@ -86,11 +124,23 @@ def show_slide(slide_num):
         total_slides=total,
         prev_slide=prev_slide,
         next_slide=next_slide,
+        qr_code_data=qr_code_data,
     )
 
 
 @app.route("/export/pdf")
 def export_pdf():
+    """Export all slides as PDF with caching."""
+    global CACHED_PDF  # pylint: disable=global-statement
+
+    # Return cached PDF if available
+    if CACHED_PDF is not None:
+        return Response(
+            CACHED_PDF,
+            mimetype="application/pdf",
+            headers=HEADERS,
+        )
+
     files = get_slide_files()
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
@@ -166,7 +216,11 @@ def export_pdf():
     {''.join(slides_html)}
 </body>
 </html>"""
+
+    # Generate and cache PDF
     pdf = HTML(string=pdf_html).write_pdf()
+    CACHED_PDF = pdf
+
     return Response(
         pdf,
         mimetype="application/pdf",
