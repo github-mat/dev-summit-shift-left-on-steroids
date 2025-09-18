@@ -30,7 +30,7 @@ Always reference these instructions first and fallback to search or bash command
   - `cd dev-summit`
   - `black --config pyproject.toml --check src/`
   - `isort --settings-file=pyproject.toml --check-only src/`
-  - `pylint --rcfile=pyproject.toml src/`
+  - `pylint --rcfile=pyproject.toml src/` (10/10 score is required)
 - Run tests:
   - `cd dev-summit`
   - `pytest src/`

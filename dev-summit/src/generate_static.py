@@ -93,8 +93,13 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
         prev_navigation = '<a class="disabled">&laquo; Zurück</a>'
 
     # Replace the prev_slide template block
+    prev_regex = (
+        r'{% if prev_slide %}.*?<a href="{{ url_for\(\'show_slide\', '
+        r'slide_num=prev_slide\) }}">&laquo; Zurück</a>.*?{% else %}.*?'
+        r'<a class="disabled">&laquo; Zurück</a>.*?{% endif %}'
+    )
     page = re.sub(
-        r'{% if prev_slide %}.*?<a href="{{ url_for\(\'show_slide\', slide_num=prev_slide\) }}">&laquo; Zurück</a>.*?{% else %}.*?<a class="disabled">&laquo; Zurück</a>.*?{% endif %}',
+        prev_regex,
         prev_navigation,
         page,
         flags=re.DOTALL,
@@ -108,8 +113,13 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
         next_navigation = '<a class="disabled">Weiter &raquo;</a>'
 
     # Replace the next_slide template block
+    next_regex = (
+        r'{% if next_slide %}.*?<a href="{{ url_for\(\'show_slide\', '
+        r'slide_num=next_slide\) }}">Weiter &raquo;</a>.*?{% else %}.*?'
+        r'<a class="disabled">Weiter &raquo;</a>.*?{% endif %}'
+    )
     page = re.sub(
-        r'{% if next_slide %}.*?<a href="{{ url_for\(\'show_slide\', slide_num=next_slide\) }}">Weiter &raquo;</a>.*?{% else %}.*?<a class="disabled">Weiter &raquo;</a>.*?{% endif %}',
+        next_regex,
         next_navigation,
         page,
         flags=re.DOTALL,
