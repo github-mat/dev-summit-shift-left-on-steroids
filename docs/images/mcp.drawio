@@ -1,0 +1,93 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2" pages="2">
+  <diagram name="Page-1" id="74FAeeuEVNDoVYwLzQNA">
+    <mxGraphModel dx="2614" dy="1435" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-2" value="&lt;b&gt;Chat&lt;/b&gt; &lt;b&gt;Interface&lt;/b&gt;&lt;div&gt;(LibreChat)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1023" y="103" width="188" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-3" value="&lt;b&gt;IDEs / Plugins für IDEs&lt;br&gt;&lt;/b&gt;(GitHub Copilot)&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1024" y="188" width="189" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-4" value="&lt;b&gt;Andere KI Anwendungen&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1024" y="273" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-6" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22Chat%20Interface%26lt%3Bdiv%26gt%3B(Bsp.%3A%20LibreChat)%26lt%3B%2Fdiv%26gt%3B%22%20style%3D%22rounded%3D0%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22-1023%22%20y%3D%22103%22%20width%3D%22188%22%20height%3D%2260%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;b&gt;Daten&lt;/b&gt;&lt;div&gt;&lt;b&gt;(&lt;/b&gt;Lokales Filesystem, Datenbanken, Dropbox)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-410" y="103" width="188" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-7" value="&lt;b&gt;Development Tools&lt;/b&gt;&lt;div&gt;Git, Jira, SonarQube, etc.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-408" y="188" width="188" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-8" value="&lt;b&gt;1000+ Weitere&lt;/b&gt;&lt;br&gt;&lt;div&gt;MS Teams, AWS CLI, etc.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-410" y="273" width="188" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-16" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;startArrow=classic;startFill=1;" edge="1" parent="1" source="uDzi0LpfGfWWbFV2vlgb-14" target="uDzi0LpfGfWWbFV2vlgb-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-14" value="MCP-Host" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=90;height=28;" vertex="1" parent="1">
+          <mxGeometry x="-1079" y="54" width="285" height="319" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-15" value="MCP-Server" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=90;height=28;" vertex="1" parent="1">
+          <mxGeometry x="-455" y="54" width="272" height="319" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-18" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-794" y="180" width="27" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-19" value="N" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-488" y="180" width="30" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="uDzi0LpfGfWWbFV2vlgb-20" value="Bidirektional Kommunikation" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-729" y="180" width="220" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="krXMy9GYxs-N7fMu2C0i-1" value="&lt;b&gt;MCP&lt;/b&gt;&lt;div&gt;Standardisiertes Protokoll&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Ressourcen (Datenbanken)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Tools (CLI)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Prompts (Reusable Templates zu Interaktion mit Sprachmodellen)&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;" vertex="1" parent="1">
+          <mxGeometry x="-734" y="240" width="230" height="121.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="FE7HXQ1ZfFqMzOGiVDDw" name="Page-2">
+    <mxGraphModel dx="1414" dy="1435" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JgijanJiNhlwDmoVM8B--1" value="&lt;b&gt;MCP&lt;/b&gt;&lt;div&gt;Standardisiertes Protokoll&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Ressourcen (Datenbanken)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Tools (CLI)&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Prompts (Reusable Templates zu Interaktion mit Sprachmodellen)&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;" vertex="1" parent="1">
+          <mxGeometry x="260" y="544" width="230" height="121.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;startArrow=classic;startFill=1;" edge="1" parent="1" source="JgijanJiNhlwDmoVM8B--9" target="JgijanJiNhlwDmoVM8B--10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--9" value="&lt;b&gt;GH Copilot Plugin&lt;/b&gt;&lt;div&gt;MCP-Host&lt;/div&gt;" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=190;height=34;" vertex="1" parent="1">
+          <mxGeometry x="8" y="483" width="200" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--10" value="MCP-Server" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=90;height=28;" vertex="1" parent="1">
+          <mxGeometry x="541" y="356.5" width="598" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--13" value="Bidirektional Kommunikation" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="270" y="478" width="220" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--15" value="&lt;b&gt;GH Copilot Plugin&lt;/b&gt;" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=190;height=34;" vertex="1" parent="1">
+          <mxGeometry x="578" y="413.5" width="285" height="229" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--16" value="&lt;b&gt;Edit&lt;/b&gt;&lt;div&gt;Dateien bearbeiten&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="594" y="468.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--17" value="&lt;b&gt;Fetch&lt;/b&gt;&lt;div&gt;Content von Webpages fetchen&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="731" y="468.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--18" value="&lt;b&gt;runComma&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%26lt%3Bb%26gt%3BEdit%26lt%3B%2Fb%26gt%3B%26lt%3Bdiv%26gt%3BDateien%20bearbeiten%26lt%3B%2Fdiv%26gt%3B%22%20style%3D%22rounded%3D0%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22692%22%20y%3D%22410%22%20width%3D%22120%22%20height%3D%2260%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;b&gt;nds&lt;/b&gt;&lt;br&gt;&lt;div&gt;Befehle im Terminal ausführen.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="594" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--19" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;text-align: start; background-color: transparent;&quot;&gt;&lt;b&gt;testFailure&lt;/b&gt;&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap; background-color: transparent;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%26lt%3Bb%26gt%3BEdit%26lt%3B%2Fb%26gt%3B%26lt%3Bdiv%26gt%3BDateien%20bearbeiten%26lt%3B%2Fdiv%26gt%3B%22%20style%3D%22rounded%3D0%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22692%22%20y%3D%22410%22%20width%3D%22120%22%20height%3D%2260%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphMode&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Test informationen&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="731" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--21" value="&lt;b&gt;Custom MCP Server&lt;/b&gt;&lt;div&gt;mcp.json&lt;/div&gt;" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=190;height=34;" vertex="1" parent="1">
+          <mxGeometry x="889" y="413.5" width="208" height="227.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JgijanJiNhlwDmoVM8B--23" value="&lt;b&gt;Github&lt;/b&gt;&lt;span style=&quot;background-color: transparent; color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; text-wrap-mode: nowrap;&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%26lt%3Bb%26gt%3BEdit%26lt%3B%2Fb%26gt%3B%26lt%3Bdiv%26gt%3BDateien%20bearbeiten%26lt%3B%2Fdiv%26gt%3B%22%20style%3D%22rounded%3D0%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22597%22%20y%3D%22424%22%20width%3D%22120%22%20height%3D%2260%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="933" y="509" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

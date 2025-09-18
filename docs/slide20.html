@@ -138,9 +138,26 @@
     <img src="images/materna-logo.png" alt="Materna Logo" class="materna-logo">
     <img src="images/summit-logo.svg" alt="Summit Logo" class="summit-logo">
     <div class="slide">
-        <!-- # Ausgangslage -->
+        <!-- # Speaker -->
 
-<p><img alt="KI" class="center" height="auto" src="images/ausgangslage3.png" width="60%" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Constantin" src="images/constantin.jpg" style="object-fit: cover; height: 200px;" width="200" /></td>
+<td><img alt="Max" src="images/max.jpg" style="object-fit: cover; height: 200px;" width="200" /></td>
+</tr>
+<tr>
+<td><strong>Constantin Ponfick</strong><br>Cloud Developer</td>
+<td><strong>Maximilian Sparenberg</strong><br>DevOps-Engineer</td>
+</tr>
+</tbody>
+</table>
     </div>
     <div class="footer">
         <div class="footer-title">©Materna</div>
@@ -151,7 +168,7 @@
                 {% else %}
                 <a class="disabled">&laquo; Zurück</a>
                 {% endif %}
-                <span>Folie 8 / 20</span>
+                <span>Folie 20 / 20</span>
                 {% if next_slide %}
                 <a href="{{ url_for('show_slide', slide_num=next_slide) }}">Weiter &raquo;</a>
                 {% else %}

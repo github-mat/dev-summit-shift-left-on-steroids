@@ -5,5 +5,6 @@
 - Qualität der Fixes
 - Umgang mit Fehlversuchen
 - Performance
+- Manuelle Toolchain-Integration
 
 
