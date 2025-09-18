@@ -1,4 +1,0 @@
-flask
-markdown
-weasyprint
-qrcode[pil]

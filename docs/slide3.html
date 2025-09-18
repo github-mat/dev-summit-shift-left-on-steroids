@@ -155,17 +155,9 @@ KI - unser Helfer, Freund, Partner, Retter
         <div class="footer-title">©Materna</div>
         <div class="footer-right">
             <div class="nav">
-                {% if prev_slide %}
-                <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">&laquo; Zurück</a>
-                {% else %}
-                <a class="disabled">&laquo; Zurück</a>
-                {% endif %}
-                <span>Folie 3 / 18</span>
-                {% if next_slide %}
-                <a href="{{ url_for('show_slide', slide_num=next_slide) }}">Weiter &raquo;</a>
-                {% else %}
-                <a class="disabled">Weiter &raquo;</a>
-                {% endif %}
+                <a href="slide2.html">&laquo; Zurück</a>
+                <span>Folie 3 / 20</span>
+                <a href="slide4.html">Weiter &raquo;</a>
             </div>
         </div>
     </div>

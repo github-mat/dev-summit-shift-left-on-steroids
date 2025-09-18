@@ -12,25 +12,6 @@ TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template.html")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../../", "docs")
 
 
-PREV_NAV_TEMPLATE = """
-    {% if prev_slide %}
-    <a href="{{ url_for('show_slide', slide_num=prev_slide) }}">
-        &laquo; Zurück
-    </a>
-    {% else %}
-    <a class="disabled">&laquo; Zurück</a>
-    {% endif %}"""
-
-NEXT_NAV_TEMPLATE = """
-    {% if next_slide %}
-    <a href="{{ url_for('show_slide', slide_num=next_slide) }}">
-        Weiter &raquo;
-    </a>
-    {% else %}
-    <a class="disabled">Weiter &raquo;</a>
-    {% endif %}"""
-
-
 def render_static_html():
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
@@ -102,34 +83,48 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
     prev_slide = idx - 1 if idx > 1 else None
     next_slide = idx + 1 if idx < total else None
 
-    page = content_template
-    page = page.replace("{{ content|safe }}", html_content)
-    page = page.replace("{{ slide_num }}", str(idx))
-    page = page.replace("{{ total_slides }}", str(total))
-
-    # Navigation-Links (nur statisch, keine Flask-URL)
+    # Replace Flask template navigation logic with static HTML
+    # Handle prev_slide navigation
     if prev_slide:
         prev_link = f"slide{prev_slide}.html"
-        page = page.replace(
-            PREV_NAV_TEMPLATE,
-            f'<a href="{prev_link}">&laquo; Zurück</a>',
-        )
+        # Replace the entire {% if prev_slide %} ... {% else %} ... {% endif %} block
+        prev_navigation = f'<a href="{prev_link}">&laquo; Zurück</a>'
     else:
-        page = page.replace(
-            PREV_NAV_TEMPLATE,
-            '<a class="disabled">&laquo; Zurück</a>',
-        )
+        prev_navigation = '<a class="disabled">&laquo; Zurück</a>'
+
+    # Replace the prev_slide template block
+    prev_regex = (
+        r'{% if prev_slide %}.*?<a href="{{ url_for\(\'show_slide\', '
+        r'slide_num=prev_slide\) }}">&laquo; Zurück</a>.*?{% else %}.*?'
+        r'<a class="disabled">&laquo; Zurück</a>.*?{% endif %}'
+    )
+    page = re.sub(
+        prev_regex,
+        prev_navigation,
+        page,
+        flags=re.DOTALL,
+    )
+
+    # Handle next_slide navigation
     if next_slide:
         next_link = f"slide{next_slide}.html"
-        page = page.replace(
-            NEXT_NAV_TEMPLATE,
-            f'<a href="{next_link}">Weiter &raquo;</a>',
-        )
+        next_navigation = f'<a href="{next_link}">Weiter &raquo;</a>'
     else:
-        page = page.replace(
-            NEXT_NAV_TEMPLATE,
-            '<a class="disabled">Weiter &raquo;</a>',
-        )
+        next_navigation = '<a class="disabled">Weiter &raquo;</a>'
+
+    # Replace the next_slide template block
+    next_regex = (
+        r'{% if next_slide %}.*?<a href="{{ url_for\(\'show_slide\', '
+        r'slide_num=next_slide\) }}">Weiter &raquo;</a>.*?{% else %}.*?'
+        r'<a class="disabled">Weiter &raquo;</a>.*?{% endif %}'
+    )
+    page = re.sub(
+        next_regex,
+        next_navigation,
+        page,
+        flags=re.DOTALL,
+    )
+
     return page
 
 
