@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from app import app, get_slide_files
+from app import app, generate_qr_code, get_slide_files
 
 
 @pytest.fixture
@@ -106,3 +106,55 @@ def test_pdf_export(client, temp_slides):
     response = client.get("/export/pdf")
     assert response.status_code == 200
     assert response.content_type == "application/pdf"
+
+
+def test_generate_qr_code():
+    """Test QR code generation."""
+    test_url = "http://localhost:8080/export/pdf"
+    qr_data_url = generate_qr_code(test_url)
+
+    # Check that it returns a valid data URL
+    assert qr_data_url.startswith("data:image/png;base64,")
+    assert len(qr_data_url) > 50  # Should be a substantial base64 string
+
+
+def test_qr_code_cache():
+    """Test QR code caching."""
+    test_url = "http://test.example.com/test"
+
+    # First call
+    qr_data_url1 = generate_qr_code(test_url)
+
+    # Second call should return the same cached result
+    qr_data_url2 = generate_qr_code(test_url)
+
+    assert qr_data_url1 == qr_data_url2
+
+
+def test_qr_code_on_final_slide(client, temp_slides):
+    """Test that QR code appears only on the final slide."""
+    # Test first slide (should not have QR code)
+    response = client.get("/slide/1")
+    assert response.status_code == 200
+    content = response.get_data(as_text=True)
+    assert 'class="qr-code-container"' not in content
+
+    # Test final slide (should have QR code)
+    response = client.get("/slide/2")  # Last slide in our test data
+    assert response.status_code == 200
+    content = response.get_data(as_text=True)
+    assert 'class="qr-code-container"' in content
+    assert "Scan to download slides" in content
+    assert "data:image/png;base64," in content
+
+
+def test_pdf_cache(client, temp_slides):
+    """Test PDF export caching."""
+    # First request
+    response1 = client.get("/export/pdf")
+    assert response1.status_code == 200
+
+    # Second request should use cached version
+    response2 = client.get("/export/pdf")
+    assert response2.status_code == 200
+    assert response1.data == response2.data
