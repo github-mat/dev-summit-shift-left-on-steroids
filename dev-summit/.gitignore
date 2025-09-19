@@ -39,4 +39,12 @@ out/
 ### Kotlin ###
 .kotlin
 
+### Python/UV ###
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.pytest_cache/
+*.egg-info/
+
 .DS_Store

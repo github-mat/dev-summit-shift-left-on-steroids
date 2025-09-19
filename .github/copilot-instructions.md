@@ -7,36 +7,36 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Initial Setup
-- Install Python dependencies:
+- Install Python dependencies using UV (fast Rust-based package manager):
   - `cd dev-summit`
-  - `pip install -r requirements.txt` -- takes ~13 seconds
-  - `pip install -r requirements-dev.txt` -- takes ~6 seconds
+  - `uv sync --extra dev` -- takes ~3 seconds (much faster than pip)
+  - This creates a `.venv` virtual environment automatically
 
-### Development Workflow
-- Activate python .venv in dev-summit or create it.
+### Development Workflow  
+- UV automatically manages the virtual environment
 - Run the Flask web application:
   - `cd dev-summit/src`
-  - `python app.py`
+  - `uv run python app.py`
   - Application runs on http://localhost:8080
   - NEVER CANCEL: Application starts immediately, no build step required
 - Generate static HTML files:
-  - `cd dev-summit/src`
-  - `python generate_static.py` -- takes ~1 second
+  - `cd dev-summit`
+  - `uv run python src/generate_static.py` -- takes ~1 second
   - Static files are generated in `docs/` directory
   - Static files can be served with: `cd docs && python3 -m http.server 8081`
 
 ### Code Quality and Testing (REQUIRED before committing)
 - Run all linting and formatting checks:
   - `cd dev-summit`
-  - `black --config pyproject.toml --check src/`
-  - `isort --settings-file=pyproject.toml --check-only src/`
-  - `pylint --rcfile=pyproject.toml src/` (10/10 score is required)
+  - `uv run black --config pyproject.toml --check src/`
+  - `uv run isort --settings-file=pyproject.toml --check-only src/`
+  - `uv run pylint --rcfile=pyproject.toml src/` (10/10 score is required)
 - Run tests:
   - `cd dev-summit`
-  - `pytest src/`
+  - `uv run pytest src/`
 - Fix formatting automatically:
-  - `black --config pyproject.toml src/`
-  - `isort --settings-file=pyproject.toml src/`
+  - `uv run black --config pyproject.toml src/`
+  - `uv run isort --settings-file=pyproject.toml src/`
 
 ### Docker and Deployment
 - Docker build: 
@@ -80,10 +80,10 @@ Always reference these instructions first and fallback to search or bash command
   - `slides/` - Markdown slide files (01_startfolie.md through 18_speaker.md)
   - `test_*.py` - Test files for application logic
 - `dev-summit/` - Python project configuration
-  - `requirements.txt` - Runtime dependencies (flask, markdown, weasyprint)
-  - `requirements-dev.txt` - Development dependencies (black, pylint, isort, pytest)
-  - `pyproject.toml` - Tool configuration for formatting and linting
-  - `Dockerfile` - Container configuration for deployment
+  - `pyproject.toml` - Project metadata, dependencies, and tool configuration
+  - `uv.lock` - Locked dependency versions for reproducible builds
+  - `.venv/` - UV-managed virtual environment (auto-created)
+  - `Dockerfile` - Container configuration using UV for deployment
 - `.github/workflows/` - CI/CD pipeline
   - `deploy.yaml` - Main deployment workflow with Docker build and Terraform apply
   - `destroy-pr-resources.yaml` - Cleanup workflow for PR environments
@@ -106,7 +106,7 @@ The deployment pipeline (`deploy.yaml`) runs on push to main and PR events:
 4. **Terraform Apply**: Deploy to Google Cloud Run with workspace-based environments
 
 ### Build Timeouts and Expectations
-- Python dependency installation: ~20 seconds total
+- UV dependency installation: ~3 seconds total (10-100x faster than pip)
 - Linting and formatting checks: ~5 seconds total  
 - Test execution: ~3 seconds
 - Docker build: ~2-5 minutes (when SSL certificates work)
@@ -124,19 +124,19 @@ The deployment pipeline (`deploy.yaml`) runs on push to main and PR events:
 ### Adding New Slides
 1. Create numbered Markdown file in `dev-summit/src/slides/` (e.g., `19_new-slide.md`)
 2. Add any images to `dev-summit/src/slides/images/`
-3. Test with Flask app: `cd dev-summit/src && python app.py`
-4. Regenerate static HTML: `python generate_static.py`
+3. Test with Flask app: `cd dev-summit && uv run python src/app.py`
+4. Regenerate static HTML: `uv run python src/generate_static.py`
 5. Run tests and linting before committing
 
 ### Debugging Issues
-- Check Flask app logs when running `python app.py`
+- Check Flask app logs when running `uv run python src/app.py`
 - Verify slide files are properly numbered and formatted
 - Test PDF export separately with WeasyPrint dependencies
 - Use browser developer tools to debug CSS and JavaScript issues
 - Static HTML generation issues usually involve path resolution
 
 ### Development Tips
-- Use `FLASK_DEBUG=true python app.py` for development mode with auto-reload
+- Use `cd dev-summit && uv run python src/app.py` for development
 - Test both dynamic Flask routes and static HTML output
 - PDF export requires proper system fonts and WeasyPrint dependencies
 - Arrow key navigation only works when no input fields are focused
