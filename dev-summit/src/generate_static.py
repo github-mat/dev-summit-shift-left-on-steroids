@@ -4,6 +4,8 @@ import shutil
 
 import markdown
 
+from app import generate_qr_code
+
 # Statisches HTML-Export-Skript für die Slides
 # Nutzt das gleiche Template wie die Flask-App
 
@@ -74,6 +76,43 @@ def get_html_content(filename: str) -> str:
     return html_content
 
 
+def _generate_qr_code_html(is_final_slide: bool) -> str:
+    """Generate QR code HTML for the final slide."""
+    if not is_final_slide:
+        return ""
+
+    # Generate QR code for PDF download in static context
+    # Using localhost URL for static generation - this will work for development
+    # In production, this would need to be updated with the actual domain
+    pdf_url = "http://localhost:8080/export/pdf"  # Default for local development
+    qr_code_data_url = generate_qr_code(pdf_url)
+    return f"""
+        <div class="qr-code-container">
+            <img src="{qr_code_data_url}" alt="QR Code für Slide Download">
+            <p>Scan to download slides</p>
+        </div>
+        """
+
+
+def _generate_navigation_html(
+    prev_slide: int | None, next_slide: int | None
+) -> tuple[str, str]:
+    """Generate navigation HTML for prev and next links."""
+    if prev_slide:
+        prev_link = f"slide{prev_slide}.html"
+        prev_navigation = f'<a href="{prev_link}">&laquo; Zurück</a>'
+    else:
+        prev_navigation = '<a class="disabled">&laquo; Zurück</a>'
+
+    if next_slide:
+        next_link = f"slide{next_slide}.html"
+        next_navigation = f'<a href="{next_link}">Weiter &raquo;</a>'
+    else:
+        next_navigation = '<a class="disabled">Weiter &raquo;</a>'
+
+    return prev_navigation, next_navigation
+
+
 def prepare_page(content_template: str, html_content: str, idx: int, total: int) -> str:
     page = content_template
     page = page.replace("{{ content|safe }}", html_content)
@@ -83,34 +122,22 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
     prev_slide = idx - 1 if idx > 1 else None
     next_slide = idx + 1 if idx < total else None
 
-    # Replace Flask template navigation logic with static HTML
-    # Handle prev_slide navigation
-    if prev_slide:
-        prev_link = f"slide{prev_slide}.html"
-        # Replace the entire {% if prev_slide %} ... {% else %} ... {% endif %} block
-        prev_navigation = f'<a href="{prev_link}">&laquo; Zurück</a>'
-    else:
-        prev_navigation = '<a class="disabled">&laquo; Zurück</a>'
+    # Handle QR code for final slide
+    qr_code_html = _generate_qr_code_html(idx == total)
+    qr_regex = r"{% if qr_code_data_url %}.*?{% endif %}"
+    page = re.sub(qr_regex, qr_code_html, page, flags=re.DOTALL)
 
+    # Generate navigation HTML
+    prev_navigation, next_navigation = _generate_navigation_html(prev_slide, next_slide)
+
+    # Replace Flask template navigation logic with static HTML
     # Replace the prev_slide template block
     prev_regex = (
         r'{% if prev_slide %}.*?<a href="{{ url_for\(\'show_slide\', '
         r'slide_num=prev_slide\) }}">&laquo; Zurück</a>.*?{% else %}.*?'
         r'<a class="disabled">&laquo; Zurück</a>.*?{% endif %}'
     )
-    page = re.sub(
-        prev_regex,
-        prev_navigation,
-        page,
-        flags=re.DOTALL,
-    )
-
-    # Handle next_slide navigation
-    if next_slide:
-        next_link = f"slide{next_slide}.html"
-        next_navigation = f'<a href="{next_link}">Weiter &raquo;</a>'
-    else:
-        next_navigation = '<a class="disabled">Weiter &raquo;</a>'
+    page = re.sub(prev_regex, prev_navigation, page, flags=re.DOTALL)
 
     # Replace the next_slide template block
     next_regex = (
@@ -118,12 +145,7 @@ def prepare_page(content_template: str, html_content: str, idx: int, total: int)
         r'slide_num=next_slide\) }}">Weiter &raquo;</a>.*?{% else %}.*?'
         r'<a class="disabled">Weiter &raquo;</a>.*?{% endif %}'
     )
-    page = re.sub(
-        next_regex,
-        next_navigation,
-        page,
-        flags=re.DOTALL,
-    )
+    page = re.sub(next_regex, next_navigation, page, flags=re.DOTALL)
 
     return page
 

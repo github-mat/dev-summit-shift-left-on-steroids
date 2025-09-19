@@ -1,15 +1,18 @@
 import base64
+import io
 import mimetypes
 import os
 import re
 
 import markdown
+import qrcode
 from flask import (
     Flask,
     Response,
     abort,
     redirect,
     render_template_string,
+    request,
     send_from_directory,
     url_for,
 )
@@ -28,6 +31,10 @@ NO_SLIDES_FOUND_HTML = """
         Keine Folien gefunden. Lege Markdown-Dateien im slides/-Verzeichnis an.
     </h2>
     """
+
+# Cache for PDF and QR code to avoid regenerating on every request
+PDF_CACHE = None
+QR_CACHE = {}
 
 
 @app.route("/slide/images/<path:filename>")
@@ -55,6 +62,35 @@ def get_slide_files():
     return files
 
 
+def generate_qr_code(url):
+    """Generate QR code for the given URL and return as data URL."""
+    cache_key = url
+    if cache_key in QR_CACHE:
+        return QR_CACHE[cache_key]
+
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Convert PIL image to data URL
+    img_buffer = io.BytesIO()
+    img.save(img_buffer, format="PNG")
+    img_buffer.seek(0)
+
+    img_data = base64.b64encode(img_buffer.read()).decode("utf-8")
+    data_url = f"data:image/png;base64,{img_data}"
+
+    QR_CACHE[cache_key] = data_url
+    return data_url
+
+
 @app.route("/")
 def index():
     files = get_slide_files()
@@ -73,6 +109,14 @@ def show_slide(slide_num):
     with open(os.path.join(SLIDES_DIR, filename), encoding="utf-8") as f:
         md_content = f.read()
     html_content = markdown.markdown(md_content, extensions=["extra"])
+
+    # Generate QR code for the final slide
+    qr_code_data_url = None
+    if slide_num == total:  # Last slide
+        # Generate QR code for PDF download
+        pdf_url = request.url_root.rstrip("/") + url_for("export_pdf")
+        qr_code_data_url = generate_qr_code(pdf_url)
+
     prev_slide = slide_num - 1 if slide_num > 1 else None
     next_slide = slide_num + 1 if slide_num < total else None
     # Template-Pfad relativ zu src
@@ -86,11 +130,22 @@ def show_slide(slide_num):
         total_slides=total,
         prev_slide=prev_slide,
         next_slide=next_slide,
+        qr_code_data_url=qr_code_data_url,
     )
 
 
 @app.route("/export/pdf")
 def export_pdf():
+    global PDF_CACHE  # pylint: disable=global-statement
+
+    # Return cached PDF if available
+    if PDF_CACHE is not None:
+        return Response(
+            PDF_CACHE,
+            mimetype="application/pdf",
+            headers=HEADERS,
+        )
+
     files = get_slide_files()
     slides_html = []
     images_dir = os.path.abspath(os.path.join(SLIDES_DIR, "images"))
@@ -167,6 +222,10 @@ def export_pdf():
 </body>
 </html>"""
     pdf = HTML(string=pdf_html).write_pdf()
+
+    # Cache the PDF for future requests
+    PDF_CACHE = pdf
+
     return Response(
         pdf,
         mimetype="application/pdf",
